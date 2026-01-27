@@ -521,7 +521,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                     <label class="checkbox">
                                         <input type="checkbox" name="remember"> Se souvenir
                                     </label>
-                                    <a href="pages/motdepasse_oublie.php" class="forgot-password">Mot de passe oublié ?</a>
+                                    <a href="motdepasse_oublie.php" class="forgot-password">Mot de passe oublié ?</a>
                                 </div>
                                 
                                 <button type="submit" class="btn-auth-submit">
@@ -529,7 +529,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                 </button>
                                 
                                 <div class="auth-divider">ou</div>
-                                <a href="pages/inscription_professeur.php" class="btn-auth-register">
+                                <a href="inscription_professeur.php" class="btn-auth-register">
                                     <i class="fas fa-user-plus"></i> S'inscrire comme professeur
                                 </a>
                             </form>
