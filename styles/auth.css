@@ -115,7 +115,8 @@
     background: white;
     padding: 40px;
     overflow-y: auto;
-    border : 3px solid red
+    border : 3px solid rgb(209, 222, 209);
+    box-shadow: black;
 }
 
 .auth-sidebar {
@@ -125,7 +126,7 @@
     padding: 40px;
     display: flex;
     flex-direction: column;
-    border : 3px solid blue;
+    border : 3px solid rgb(179, 205, 190);
 }
 
 /* Header */

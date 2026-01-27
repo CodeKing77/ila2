@@ -460,7 +460,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             input.error:focus {
                 box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
             }
-            </style>
+
+            .auth-container{
+                border : 3px solid rgb(209, 222, 209);
+                
+            }
+
+            .auth-sidebar {
+                border : 3px solid rgb(179, 205, 190);
+            }
+    </style>
 </head>
 <body>
 

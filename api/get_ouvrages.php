@@ -1,6 +1,6 @@
 <?php
 /**
- * API pour récupérer les ouvrages - Version finale
+ * API pour récupérer les ouvrages - Version finale --Premier fichier des get_ouvrages - Generes par deepseek , avant claude
  */
 
 // Activer l'affichage des erreurs pour le débogage
