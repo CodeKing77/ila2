@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Professeurs - ILA</title>
+    <link rel="stylesheet" href="../styles/pages/professeurs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet"><!-- Google Fonts -->
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/pages/about.css">
+    <link rel="icon" href="../assets/images/logos/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+    <div class="nav-container">
+        <a href="../index.html" class="logo">
+            <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo">
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="../index.html"  >Accueil</a></li>
+            <li><a href="about.html" >À propos</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="recherche.html" >Recherche</a></li>
+            <li><a href="professeurs.html" class="active">Professeurs</a></li>
+            <li><a href="ouvrages.html">Ouvrages</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <!-- Menu connexion -->
+            <li class="nav-auth-dropdown" id="authDropdown">
+                <!-- État non connecté -->
+                <div class="auth-container not-logged-in">
+                    <button class="auth-btn" id="authToggle">
+                        <i class="fas fa-user"></i>
+                        <span>Connexion</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="auth-dropdown-menu">
+                        <div class="auth-tabs">
+                            <!--<button class="auth-tab active" data-tab="client">
+                                <i class="fas fa-user-graduate"></i>
+                                Client
+                            </button>-->
+                            <button class="auth-tab" data-tab="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                        </div>
+                        
+                        <div class="auth-forms">
+                            <!-- Formulaire Client -->
+                            <!--<form class="auth-form active" id="clientForm" data-type="client">
+                                <h4>Connexion Client</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                                <div class="auth-divider">ou</div>
+                                <a href="inscription_client.html" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> Créer un compte
+                                </a>
+                            </form>-->
+
+                            <!--<br><br>-->
+                            <hr>
+                            <!--<br><br>-->
+                            
+                            <!-- Formulaire Professeur -->
+                            <form class="auth-form" id="professeurForm" data-type="professeur">
+                                <h4>Connexion Professeur</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email universitaire" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Accéder à l'espace
+                                </button>
+                                <div class="auth-divider">ou</div>
+                                <a href="inscription_avec_email_validation.php" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> S'inscrire comme professeur
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- État connecté (Client) -->
+                <!--<div class="auth-container logged-in client-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Jean Dupont</span>
+                            <span class="user-type">Client</span>
+                        </div>
+                        
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_client.html" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Mon compte
+                            </a>
+                            <a href="mes_commandes.html" class="user-menu-item">
+                                <i class="fas fa-shopping-bag"></i> Mes commandes
+                            </a>
+                            <a href="mes_favoris.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i> Mes favoris
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>-->
+                
+                <!-- État connecté (Professeur) -->
+                <div class="auth-container logged-in professeur-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar professor">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Prof. KOUAMÉ</span>
+                            <span class="user-type">Professeur</span>
+                        </div>
+                        <!-- Version corrigée -->
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                           <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_professeur.html" class="user-menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                            </a>
+                            <a href="mes_ouvrages.html" class="user-menu-item">
+                                <i class="fas fa-book"></i> Mes ouvrages
+                            </a>
+                            <a href="ajouter_ouvrage.html" class="user-menu-item">
+                                <i class="fas fa-plus-circle"></i> Ajouter un ouvrage
+                            </a>
+                            <a href="statistiques.html" class="user-menu-item">
+                                <i class="fas fa-chart-line"></i> Statistiques
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Panier (toujours visible) -->
+            <!--li class="cart-icon">
+                <a href="panier.html" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>-->
+        </ul>
+        
+        <button class="menu-toggle" type="button" aria-label="Basculer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+    <main class="container">
+        <section class="page-header">
+            <h1>Nos Professeurs</h1>
+            <p>Découvrez notre équipe de professeurs et chercheurs experts en linguistique, éducation et développement durable</p>
+        </section>
+
+        <section class="professor-profile">
+            <div class="profile-header">
+                <div class="photo-placeholder">
+                    <!--<i class="fas fa-user-graduate"></i>-->
+                    <p><img src="../assets/covers/img_prof_kouame.jfif" alt="" width="250" height="250"></p>
+                </div>
+                <div class="profile-info">
+                    <h2>Koia Jean Martial KOUAMÉ</h2>
+                    <p class="title">Professeur des Universités - Chercheur en éducation et en sciences du langage - Acteur de développement durable</p>
+                    
+                    <div class="universities">
+                        <h3><i class="fas fa-university"></i> Universités affiliées</h3>
+                        <div class="university-badges">
+                            <span class="university-badge">Université Félix Houphouët-Boigny</span>
+                            <span class="university-badge">Université de Montréal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <section class="research-domains">
+                    <h3><i class="fas fa-search"></i> Domaines de recherche et d'expertise</h3>
+                    <ul>
+                        <li>Interventions didactiques en milieux multiethniques et multilingues</li>
+                        <li>Évaluation des programmes d'enseignement, contenus disciplinaires et manuels scolaires</li>
+                        <li>Variation du français en Afrique</li>
+                        <li>Lexicologie et lexicographie francophone</li>
+                    </ul>
+                </section>
+
+                <section class="academic-section">
+                    <h3><i class="fas fa-graduation-cap"></i> Diplômes universitaires</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">2010</div>
+                            <div class="timeline-content">
+                                <h4>Postdoctorat en Sciences de l'éducation</h4>
+                                <p>Université de Montréal, Canada</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2007</div>
+                            <div class="timeline-content">
+                                <h4>Doctorat en Sciences du Langage</h4>
+                                <p>Université Paul-Valéry (Montpellier III) France</p>
+                                <p class="honor">Mention Très Honorable avec les félicitations du jury</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2000</div>
+                            <div class="timeline-content">
+                                <h4>DEA en Sciences du Langage</h4>
+                                <p>Université de Cocody-Abidjan</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1999</div>
+                            <div class="timeline-content">
+                                <h4>Maîtrise en Linguistique et Communication</h4>
+                                <p>Université de Bouaké</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="academic-section">
+                    <h3><i class="fas fa-briefcase"></i> Expérience professionnelle</h3>
+                    <div class="experience-list">
+                        <div class="experience-item">
+                            <h4>Consultant pour la révision de Stratégie Nationale d'Alphabétisation et pour l'élaboration du Programme National Alphabétisation Familiale et Nutrition</h4>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Professeur invité au Département des études européennes, américaines et interculturelles de l'Université la Sapienza de Rome</h4>
+                            <p class="experience-period">Mars - Mai 2023</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Enseignant de Techniques de diction au Département de Cinéma et de production audiovisuelle de l'Institut Universitaire d'Abidjan</h4>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Enseignant de Techniques d'expression française et de Communication aux Facultés Universitaires Privées d'Abidjan (FUPA)</h4>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Responsable de l'équipe de formateurs en Français sur Objectifs Spécifiques auprès de la Korea International Cooperation Agency en Côte d'Ivoire</h4>
+                            <p class="experience-period">2017</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Vacataire au Département des Sciences de l'Education de l'ENS d'Abidjan</h4>
+                            <p class="experience-period">2016 - 2020</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Membre de l'équipe pédagogique du Master Sous Régional de Didactique du Français initié par le Bureau Afrique de l'Ouest de l'AUF</h4>
+                            <p class="experience-period">2015 - 2023</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Chercheur postdoctoral du Projet Pluri-L sur le développement de perspectives plurilingues en éducation et formation (Université d'Angers, Université de Nantes, Université du Maine)</h4>
+                            <p class="experience-period">2011 - 2012</p>
+                            <p class="honor">Classé premier à la sélection internationale à ce poste</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Enseignant au Centre Universitaire d'Études Françaises d'Abidjan</h4>
+                            <p class="experience-period">2007 - 2016</p>
+                        </div>
+                        <div class="experience-item">
+                            <h4>Enseignant de français dans l'enseignement secondaire général et le supérieur technique</h4>
+                            <p class="experience-period">2001 - 2004</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="other-professors">
+            <h2><i class="fas fa-users"></i> Autres professeurs de l'ILA</h2>
+            <p>Nous présenterons bientôt les autres membres de notre équipe académique</p>
+            <div class="professor-cards">
+                <div class="professor-card placeholder">
+                    <div class="card-photo">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>À venir</h4>
+                    <p>Professeur de linguistique</p>
+                    <button class="btn-outline">Profil à venir</button>
+                </div>
+                <div class="professor-card placeholder">
+                    <div class="card-photo">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>À venir</h4>
+                    <p>Professeur de didactique</p>
+                    <button class="btn-outline">Profil à venir</button>
+                </div>
+                <div class="professor-card placeholder">
+                    <div class="card-photo">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>À venir</h4>
+                    <p>Professeur de sciences du langage</p>
+                    <button class="btn-outline">Profil à venir</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo" class="footer-logo">
+                <p>Institut de Linguistique Appliquée d'Abidjan<br>
+                Université Félix Houphouët‑Boigny</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="pages/about.html">À propos</a></li>
+                    <li><a href="pages/missions.html">Missions</a></li>
+                    <li><a href="pages/recherche.html">Recherche</a></li>
+                    <li><a href="pages/professeurs.php">Professeurs</a></li>
+                    <li><a href="pages/ouvrages.html">Ouvrages</a></li>
+                    <li><a href="pages/contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                <p><i class="fas fa-envelope"></i> contact@ila.edu</p>
+                <p><i class="fas fa-phone"></i> +225 01 40 54 40 00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Institut de Linguistique Appliquée d'Abidjan. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/cart.js"></script>
+    <script src="../scripts/contact.js"></script>
+    <script src="../scripts/auth-manager.js"></script>
+</body>
+</html>

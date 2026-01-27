@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILA - Institut de Linguistique Appliquée d'Abidjan</title>
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="icon" href="assets/images/logos/logo_ILA.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Après les autres scripts -->
+</head>
+
+<body>
+    <!-- Navigation -->
+    <!-- Dans votre fichier HTML, remplacez la navigation actuelle par : -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="../index.html" class="logo">
+            <img src="assets/images/logos/logo_ILA.png" alt="ILA Logo">
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="index.html"  class="active">Accueil</a></li>
+            <li><a href="pages/about.html">À propos</a></li>
+            <li><a href="pages/missions.html">Missions</a></li>
+            <li><a href="pages/recherche.html">Recherche</a></li>
+            <li><a href="pages/professeurs.php">Professeurs</a></li>
+            <li><a href="pages/ouvrages.html">Ouvrages</a></li>
+            <li><a href="pages/contact.html">Contact</a></li>
+            
+            <!-- Menu connexion -->
+            <li class="nav-auth-dropdown" id="authDropdown">
+                <!-- État non connecté -->
+                <div class="auth-container not-logged-in">
+                    <button class="auth-btn" id="authToggle">
+                        <i class="fas fa-user"></i>
+                        <span>Connexion</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="auth-dropdown-menu">
+                        <div class="auth-tabs">
+                            <!--<button class="auth-tab active" data-tab="client">
+                                <i class="fas fa-user-graduate"></i>
+                                Client
+                            </button>-->
+                            <button class="auth-tab" data-tab="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                        </div>
+                        
+                        <div class="auth-forms">
+                            <!-- Formulaire Client -->
+                            <!--<form class="auth-form active" id="clientForm" data-type="client">
+                                <h4>Connexion Client</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                                <div class="auth-divider">ou</div>
+                                <a href="pages/inscription_client.html" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> Créer un compte
+                                </a>
+                               
+                            </form>-->
+                            
+                            <!--<br><br>-->
+                            <hr>
+                            <!--<br><br>-->
+                            <!-- Formulaire Professeur -->
+                            <form class="auth-form" id="professeurForm" data-type="professeur" method="post">
+                                <h4>Connexion Professeur</h4>
+                                
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email universitaire" required name="email" autocomplete="email">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required name="password" autocomplete="current-password">
+                                </div>
+                                
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="remember"> Se souvenir
+                                    </label>
+                                    <a href="pages/motdepasse_oublie.html" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Accéder à l'espace
+                                </button>
+                                
+                                <div class="auth-divider">ou</div>
+                                <a href="pages/inscription_professeur.php" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> S'inscrire comme professeur
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- État connecté (Client) -->
+                <!--<div class="auth-container logged-in client-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Jean Dupont</span>
+                            <span class="user-type">Client</span>
+                        </div>
+                        
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_client.html" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Mon compte
+                            </a>
+                            <a href="mes_commandes.html" class="user-menu-item">
+                                <i class="fas fa-shopping-bag"></i> Mes commandes
+                            </a>
+                            <a href="mes_favoris.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i> Mes favoris
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <!-- État connecté (Professeur) -->
+                <div class="auth-container logged-in professeur-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar professor">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Prof. KOUAMÉ</span>
+                            <span class="user-type">Professeur</span>
+                        </div>
+                        <!-- Version corrigée -->
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                           <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_professeur.html" class="user-menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                            </a>
+                            <a href="mes_ouvrages.html" class="user-menu-item">
+                                <i class="fas fa-book"></i> Mes ouvrages
+                            </a>
+                            <a href="ajouter_ouvrage.html" class="user-menu-item">
+                                <i class="fas fa-plus-circle"></i> Ajouter un ouvrage
+                            </a>
+                            <a href="statistiques.html" class="user-menu-item">
+                                <i class="fas fa-chart-line"></i> Statistiques
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Panier (toujours visible) -->
+            <!--<li class="cart-icon">
+                <a href="panier.html" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>-->
+        </ul>
+        
+        <button class="menu-toggle" type="button" aria-label="Basculer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Institut de Linguistique Appliquée d'Abidjan</h1>
+            <p class="hero-subtitle">Excellence en sciences du langage au service du développement culturel, éducatif et scientifique</p>
+            <div class="hero-buttons">
+                <a href="pages/ouvrages.html" class="btn btn-primary">Découvrir nos ouvrages</a>
+                <a href="pages/professeurs.php" class="btn btn-secondary">Rencontrer nos experts</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Nos domaines d'expertise</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Linguistique Appliquée</h3>
+                    <p>Étude et application des sciences du langage dans des contextes réels.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Documentation</h3>
+                    <p>Préservation et valorisation des langues ivoiriennes et africaines.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Formation</h3>
+                    <p>Formation de spécialistes en linguistique et sciences du langage.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Recherche</h3>
+                    <p>Recherche scientifique et innovation en linguistique descriptive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Publications -->
+    <section class="publications">
+        <div class="container">
+            <h2 class="section-title">Publications récentes</h2>
+            <div class="publications-grid" id="latest-publications">
+                <!-- Chargé dynamiquement par JavaScript -->
+            </div>
+            <div class="text-center">
+                <a href="pages/ouvrages.html" class="btn btn-outline">Voir tous les ouvrages</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <h2>Participez à la préservation du patrimoine linguistique</h2>
+            <p>Soutenez nos travaux de recherche et contribuez au développement des sciences du langage en Afrique.</p>
+            <div class="cta-buttons">
+                <a href="pages/contact.html" class="btn btn-primary">Nous contacter</a>
+                <a href="pages/about.html" class="btn btn-secondary">En savoir plus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <img src="assets/images/logos/logo_ILA.png" alt="ILA Logo" class="footer-logo">
+                <p>Institut de Linguistique Appliquée d'Abidjan<br>
+                Université Félix Houphouët‑Boigny</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="pages/about.html">À propos</a></li>
+                    <li><a href="pages/missions.html">Missions</a></li>
+                    <li><a href="pages/recherche.html">Recherche</a></li>
+                    <li><a href="pages/professeurs.php">Professeurs</a></li>
+                    <li><a href="pages/ouvrages.html">Ouvrages</a></li>
+                    <li><a href="pages/contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                <p><i class="fas fa-envelope"></i> contact@ila.edu</p>
+                <p><i class="fas fa-phone"></i> +225 01 40 54 40 00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Institut de Linguistique Appliquée d'Abidjan. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Votre Panier</h3>
+            <button class="close-cart" type="button" aria-label="Fermer le panier">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Items du panier -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">0 XOF</span>
+            </div>
+            <button class="btn btn-primary btn-checkout" type="button">Passer commande</button>
+        </div>
+    </div>
+    
+    <script src="scripts/auth-manager.js"></script>
+    <script src="scripts/main.js"></script>
+    
+    <!--<script src="scripts/cart.js"></script>-->
+    <!--<script src="scripts/contact.js"></script>-->
+    <!--<script src="scripts/catalogue.js"></script>-->
+   
+</body>
+</html>

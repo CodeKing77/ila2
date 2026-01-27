@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - ILA</title>
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/pages/contact.css">
+    <link rel="icon" href="../assets/images/logos/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+    <div class="nav-container">
+        <a href="../index.html" class="logo">
+            <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo">
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="../index.html"  >Accueil</a></li>
+            <li><a href="about.html" >À propos</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="recherche.html" >Recherche</a></li>
+            <li><a href="professeurs.php" >Professeurs</a></li>
+            <li><a href="ouvrages.html" >Ouvrages</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+            
+            <!-- Menu connexion -->
+            <li class="nav-auth-dropdown" id="authDropdown">
+                <!-- État non connecté -->
+                <div class="auth-container not-logged-in">
+                    <button class="auth-btn" id="authToggle">
+                        <i class="fas fa-user"></i>
+                        <span>Connexion</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="auth-dropdown-menu">
+                        <div class="auth-tabs">
+                            <!--<button class="auth-tab active" data-tab="client">
+                                <i class="fas fa-user-graduate"></i>
+                                Client
+                            </button>-->
+                            <button class="auth-tab" data-tab="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                        </div>
+                        
+                        <div class="auth-forms">
+                            <!-- Formulaire Client -->
+                            <!--<form class="auth-form active" id="clientForm" data-type="client">
+                                <h4>Connexion Client</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                                <div class="auth-divider">ou</div>
+                                <a href="inscription_client.html" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> Créer un compte
+                                </a>
+                            </form>-->
+                            
+                            <!--<br><br>-->
+                            <hr>
+                            <!--<br><br>-->
+
+                            <!-- Formulaire Professeur -->
+                            <form class="auth-form" id="professeurForm" data-type="professeur">
+                                <h4>Connexion Professeur</h4>
+                                
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email universitaire" required name="email" autocomplete="email">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required name="password" autocomplete="current-password">
+                                </div>
+                                
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="remember"> Se souvenir
+                                    </label>
+                                    <a href="pages/motdepasse_oublie.php" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Accéder à l'espace
+                                </button>
+                                
+                                <div class="auth-divider">ou</div>
+                                <a href="pages/inscription_professeur.php" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> S'inscrire comme professeur
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- État connecté (Client) -->
+                <!--<div class="auth-container logged-in client-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Jean Dupont</span>
+                            <span class="user-type">Client</span>
+                        </div>
+                       
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_client.html" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Mon compte
+                            </a>
+                            <a href="mes_commandes.html" class="user-menu-item">
+                                <i class="fas fa-shopping-bag"></i> Mes commandes
+                            </a>
+                            <a href="mes_favoris.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i> Mes favoris
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>-->
+                
+                <!-- État connecté (Professeur) -->
+                <div class="auth-container logged-in professeur-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar professor">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Prof. KOUAMÉ</span>
+                            <span class="user-type">Professeur</span>
+                        </div>
+                        <!-- Version corrigée -->
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                           <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_professeur.html" class="user-menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                            </a>
+                            <a href="mes_ouvrages.html" class="user-menu-item">
+                                <i class="fas fa-book"></i> Mes ouvrages
+                            </a>
+                            <a href="ajouter_ouvrage.html" class="user-menu-item">
+                                <i class="fas fa-plus-circle"></i> Ajouter un ouvrage
+                            </a>
+                            <a href="statistiques.html" class="user-menu-item">
+                                <i class="fas fa-chart-line"></i> Statistiques
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Panier (toujours visible) -->
+            <!--<li class="cart-icon">
+                <a href="panier.html" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>-->
+        </ul>
+        
+        <button class="menu-toggle" type="button" aria-label="Basculer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+    <main class="page-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="container">
+                <h1>Contactez-nous</h1>
+                <p>Nous sommes à votre écoute pour toute question ou collaboration</p>
+            </div>
+        </div>
+
+        <!-- Contact Content -->
+        <section class="contact-content">
+            <div class="container">
+                <div class="contact-intro">
+                    <h2 class="section-title">Prenez contact avec l'ILA</h2>
+                    <p class="lead">L'Institut de Linguistique Appliquée d'Abidjan est ouvert aux collaborations scientifiques, aux demandes de formations et aux partenariats institutionnels. N'hésitez pas à nous contacter pour toute information complémentaire.</p>
+                </div>
+
+                <!-- Contact Grid -->
+                <div class="contact-grid">
+                    
+                    <!-- Contact Form -->
+                    <div class="contact-form-container">
+                        <h3>Envoyez-nous un message</h3>
+                        
+                        <form id="contactForm" class="contact-form" method ="POST" action="send_contact.php">
+                            <div class="form-group">
+                                <label for="name">Nom complet *</label>
+                                <input type="text" id="name" name="name" required placeholder="Votre nom et prénom">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Adresse email *</label>
+                                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone">Téléphone</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+225 XX XX XX XX">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Sujet *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Sélectionnez un sujet</option>
+                                    <option value="achat">Achat d'ouvrages</option>
+                                    <option value="information">Demande d'information</option>
+                                    <option value="collaboration">Proposition de collaboration</option>
+                                    <option value="formation">Demande de formation</option>
+                                    <option value="partenariat">Partenariat institutionnel</option>
+                                    <option value="autre">Autre demande</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" required placeholder="Votre message..."></textarea>
+                            </div>
+                            
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <label for="newsletter">Je souhaite recevoir les actualités de l'ILA</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Envoyer le message
+                            </button>
+                            
+                            <div class="form-status" id="formStatus"></div>
+                        </form>
+                    </div> <!--FIN du formulaire de contact-->
+
+                    <!-- Contact Information -->
+                    <div class="contact-info-container">
+                        <h3>Informations de contact</h3>
+                        
+                        <!-- Contact Details -->
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h4>Adresse</h4>
+                                    <address>
+                                        Institut de Linguistique Appliquée<br>
+                                        Université Félix Houphouët-Boigny<br>
+                                        BPV 34, Abidjan<br>
+                                        Côte d'Ivoire
+                                    </address>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h4>Téléphone</h4>
+                                    <p>
+                                        <a href="tel:+2250140544000">+225 01 40 54 40 00</a><br>
+                                        <small>Du lundi au vendredi, 8h-17h</small>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h4>Email</h4>
+                                    <p>
+                                        <a href="mailto:contact@ila.edu">contact@ila.edu</a><br>
+                                        <a href="mailto:publications@ila.edu">publications@ila.edu</a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h4>Horaires d'ouverture</h4>
+                                    <p>
+                                        Lundi - Vendredi : 8h00 - 17h00<br>
+                                        Samedi : 9h00 - 13h00<br>
+                                        Dimanche : Fermé
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media -->
+                        <div class="social-section">
+                            <h4>Suivez-nous sur les réseaux</h4>
+                            <div class="social-links">
+                                <a href="#" class="social-link facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-link twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-link linkedin">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="#" class="social-link youtube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="#" class="social-link instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Map -->
+                        <div class="map-section">
+                            <h4>Localisation</h4>
+                            <div class="map-container">
+                                <!-- Carte Google Maps intégrée (embed par recherche) -->
+                                <iframe
+                                    title="Localisation ILA - Université Félix Houphouët-Boigny"
+                                    src="https://www.google.com/maps?q=5.3427268,-3.9868584&z=17&output=embed"
+                                    width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+                                <!-- Coordonnées (latitude / longitude) pour référence -->
+                                <div class="map-coordinates" style="margin-top:0.75rem; font-size:0.95rem; color:var(--text-light);">
+                                    <strong>Coordonnées GPS :</strong>
+                                    <span>Lat: 5.3427268, Lng: -3.9868584</span>
+                                    &nbsp;•&nbsp;
+                                    <a href="https://www.google.com/maps?q=5.3427268,-3.9868584" target="_blank" rel="noopener">Ouvrir dans Google Maps</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo" class="footer-logo">
+                <p>Institut de Linguistique Appliquée d'Abidjan<br>
+                Université Félix Houphouët‑Boigny</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="about.html">À propos</a></li>
+                    <li><a href="missions.html">Missions</a></li>
+                    <li><a href="recherche.html">Recherche</a></li>
+                    <li><a href="professeurs.php">Professeurs</a></li>
+                    <li><a href="ouvrages.html">Ouvrages</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                <p><i class="fas fa-envelope"></i> contact@ila.edu</p>
+                <p><i class="fas fa-phone"></i> +225 01 40 54 40 00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Institut de Linguistique Appliquée d'Abidjan. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../scripts/auth-manager.js"></script>
+    <script src="../scripts/main.js"></script>
+    <!--<script src="../scripts/cart.js"></script>
+    <script src="../scripts/contact.js"></script>-->
+    
+    
+</body>
+</html>

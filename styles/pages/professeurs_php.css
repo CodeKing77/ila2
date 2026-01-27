@@ -1,0 +1,1154 @@
+/* styles/pages/professeurs.css */
+:root {
+    --professor-primary: #1a3c40;
+    --professor-secondary: #2d5d63;
+    --professor-accent: #38a3a5;
+    --professor-light: #f8f9fa;
+    --professor-text: #333333;
+    --professor-text-light: #666666;
+    --professor-border: #e9ecef;
+    --professor-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --professor-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --professor-gradient: linear-gradient(135deg, var(--professor-primary), var(--professor-secondary));
+    --professor-gradient-light: linear-gradient(135deg, rgba(26, 60, 64, 0.1), rgba(45, 93, 99, 0.1));
+    --professor-radius: 12px;
+    --professor-radius-sm: 8px;
+    --professor-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   STRUCTURE GÉNÉRALE
+   ============================================ */
+
+.professors-page {
+    background: var(--professor-light);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ============================================
+   HEADER DE LA PAGE
+   ============================================ */
+
+.page-header {
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: var(--professor-gradient);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 60px;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(56, 163, 165, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(45, 93, 99, 0.3) 0%, transparent 50%);
+}
+
+.page-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    position: relative;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+    line-height: 1.6;
+    position: relative;
+}
+
+.page-header .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--professor-transition);
+    position: relative;
+}
+
+.page-header .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   LISTE DES PROFESSEURS
+   ============================================ */
+
+.professors-grid {
+    padding: 0 20px 80px;
+}
+
+.grid-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.grid-header h2 {
+    font-size: 2.5rem;
+    color: var(--professor-primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.grid-header h2 i {
+    color: var(--professor-accent);
+    font-size: 2.2rem;
+}
+
+.professor-count {
+    display: inline-block;
+    background: var(--professor-accent);
+    color: white;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: var(--professor-shadow);
+}
+
+/* ============================================
+   CARTES DES PROFESSEURS
+   ============================================ */
+
+.professor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.professor-card {
+    background: white;
+    border-radius: var(--professor-radius);
+    overflow: hidden;
+    box-shadow: var(--professor-shadow);
+    transition: var(--professor-transition);
+    position: relative;
+    border: 1px solid var(--professor-border);
+}
+
+.professor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--professor-shadow-hover);
+    border-color: var(--professor-accent);
+}
+
+/* Header de la carte */
+.card-header {
+    padding: 25px 25px 20px;
+    background: var(--professor-gradient);
+    position: relative;
+    color: white;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--professor-gradient);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.card-photo {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3.5rem;
+}
+
+.card-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur();
+    backdrop-filter: blur(10px);
+}
+
+.stat-item i {
+    font-size: 1rem;
+}
+
+/* Corps de la carte */
+.card-body {
+    padding: 40px 25px 25px;
+    position: relative;
+    z-index: 2;
+    background: white;
+}
+
+.card-body h4 {
+    margin: 0 0 8px;
+    color: var(--professor-primary);
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.card-title {
+    color: var(--professor-accent);
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-university {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--professor-text);
+    margin-bottom: 20px;
+    padding: 12px;
+    background: var(--professor-light);
+    border-radius: var(--professor-radius-sm);
+    font-size: 0.95rem;
+}
+
+.card-university i {
+    color: var(--professor-accent);
+}
+
+.card-specialites {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--professor-gradient-light);
+    border-radius: var(--professor-radius-sm);
+    border-left: 4px solid var(--professor-accent);
+}
+
+.card-specialites i {
+    float: left;
+    color: var(--professor-accent);
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.specialites-preview {
+    color: var(--professor-text-light);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: block;
+    overflow: hidden;
+}
+
+.card-bio-preview {
+    color: var(--professor-text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--professor-border);
+}
+
+/* Footer de la carte */
+.card-footer {
+    padding: 20px 25px 25px;
+    border-top: 1px solid var(--professor-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--professor-accent);
+    color: var(--professor-accent);
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--professor-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-outline:hover {
+    background: var(--professor-accent);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.card-social {
+    display: flex;
+    gap: 12px;
+}
+
+.card-social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--professor-light);
+    color: var(--professor-text-light);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    transition: var(--professor-transition);
+}
+
+.card-social a:hover {
+    background: var(--professor-accent);
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* ============================================
+   SECTION "REJOIGNEZ NOTRE ÉQUIPE"
+   ============================================ */
+
+.join-team {
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--professor-gradient);
+    color: white;
+    border-radius: var(--professor-radius);
+    position: relative;
+    overflow: hidden;
+    margin: 60px 0;
+}
+
+.join-team::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+.join-team h3 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.join-team p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+    line-height: 1.6;
+    position: relative;
+}
+
+.join-team .btn-primary {
+    background: white;
+    color: var(--professor-primary);
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    position: relative;
+    transition: var(--professor-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.join-team .btn-primary:hover {
+    background: var(--professor-light);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   PAGE DE DÉTAIL DU PROFESSEUR
+   ============================================ */
+
+.professor-profile {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Header du profil */
+.profile-header {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 50px;
+    margin-bottom: 60px;
+    background: white;
+    padding: 40px;
+    border-radius: var(--professor-radius);
+    box-shadow: var(--professor-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--professor-gradient);
+}
+
+.profile-photo {
+    position: relative;
+}
+
+.profile-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--professor-radius);
+    box-shadow: var(--professor-shadow);
+}
+
+.profile-photo .photo-placeholder {
+    width: 300px;
+    height: 300px;
+    border-radius: var(--professor-radius);
+    background: var(--professor-gradient-light);
+    color: var(--professor-text-light);
+    font-size: 5rem;
+}
+
+.profile-info h2 {
+    font-size: 2.5rem;
+    color: var(--professor-primary);
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.profile-info .title {
+    color: var(--professor-accent);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--professor-gradient-light);
+    border-radius: 50px;
+}
+
+.specialites, .universities, .bio-preview {
+    margin-bottom: 30px;
+}
+
+.specialites h3, .universities h3, .bio-preview h3 {
+    font-size: 1.3rem;
+    color: var(--professor-primary);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.specialites h3 i, .universities h3 i, .bio-preview h3 i {
+    color: var(--professor-accent);
+}
+
+.university-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.university-badge {
+    background: var(--professor-light);
+    color: var(--professor-text);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+    transition: var(--professor-transition);
+}
+
+.university-badge:hover {
+    border-color: var(--professor-accent);
+    transform: translateY(-2px);
+}
+
+.bio-preview p {
+    color: var(--professor-text-light);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* Sections académiques */
+.profile-content {
+    background: white;
+    padding: 40px;
+    border-radius: var(--professor-radius);
+    box-shadow: var(--professor-shadow);
+}
+
+.academic-section {
+    margin-bottom: 50px;
+}
+
+.academic-section:last-child {
+    margin-bottom: 0;
+}
+
+.academic-section h3 {
+    font-size: 1.8rem;
+    color: var(--professor-primary);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--professor-light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.academic-section h3 i {
+    color: var(--professor-accent);
+    font-size: 1.6rem;
+}
+
+/* Timeline des diplômes */
+.timeline {
+    position: relative;
+    padding-left: 40px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--professor-gradient);
+    border-radius: 3px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 25px;
+    background: var(--professor-light);
+    border-radius: var(--professor-radius-sm);
+    border-left: 4px solid var(--professor-accent);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    transition: var(--professor-transition);
+}
+
+.timeline-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-year {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: var(--professor-gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-content h4 {
+    font-size: 1.3rem;
+    color: var(--professor-primary);
+    margin-bottom: 8px;
+}
+
+.timeline-content p {
+    color: var(--professor-text-light);
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.honor {
+    color: var(--professor-accent) !important;
+    font-weight: 600;
+    font-style: italic;
+    margin-top: 10px !important;
+    padding-top: 10px;
+    border-top: 1px dashed var(--professor-border);
+}
+
+/* Liste des expériences */
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.experience-item {
+    padding: 25px;
+    background: var(--professor-light);
+    border-radius: var(--professor-radius-sm);
+    border-left: 4px solid var(--professor-secondary);
+    position: relative;
+    transition: var(--professor-transition);
+}
+
+.experience-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.experience-item h4 {
+    font-size: 1.3rem;
+    color: var(--professor-primary);
+    margin-bottom: 10px;
+}
+
+.experience-institution {
+    color: var(--professor-secondary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.experience-period {
+    color: var(--professor-accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    padding: 5px 12px;
+    background: rgba(56, 163, 165, 0.1);
+    border-radius: 20px;
+}
+
+.experience-description {
+    color: var(--professor-text-light);
+    line-height: 1.7;
+    padding-top: 15px;
+    border-top: 1px solid var(--professor-border);
+    margin-top: 15px;
+}
+
+/* Biographie complète */
+.bio-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--professor-text);
+    padding: 30px;
+    background: var(--professor-light);
+    border-radius: var(--professor-radius-sm);
+    border: 1px solid var(--professor-border);
+}
+
+/* Liens de contact */
+.contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: var(--professor-gradient);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--professor-transition);
+    box-shadow: 0 4px 15px rgba(26, 60, 64, 0.2);
+}
+
+.contact-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(26, 60, 64, 0.3);
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 25px;
+    background: white;
+    border: 2px solid var(--professor-border);
+    border-radius: var(--professor-radius-sm);
+    color: var(--professor-text);
+    transition: var(--professor-transition);
+    width: 100%;
+    margin-top: 10px;
+}
+
+.contact-info:hover {
+    border-color: var(--professor-accent);
+    transform: translateX(5px);
+}
+
+.contact-info i {
+    color: var(--professor-accent);
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+/* ============================================
+   ÉTATS ET MESSAGES
+   ============================================ */
+
+.no-professors {
+    text-align: center;
+    padding: 80px 40px;
+    background: white;
+    border-radius: var(--professor-radius);
+    box-shadow: var(--professor-shadow);
+    margin: 40px 0;
+}
+
+.no-professors i {
+    font-size: 5rem;
+    color: var(--professor-light);
+    margin-bottom: 30px;
+    display: block;
+}
+
+.no-professors h3 {
+    font-size: 2rem;
+    color: var(--professor-primary);
+    margin-bottom: 20px;
+}
+
+.no-professors p {
+    font-size: 1.2rem;
+    color: var(--professor-text-light);
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.no-professors .btn-primary {
+    background: var(--professor-gradient);
+    color: white;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--professor-transition);
+    border: none;
+}
+
+.no-professors .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(26, 60, 64, 0.3);
+}
+
+.alert {
+    padding: 20px 25px;
+    border-radius: var(--professor-radius-sm);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: slideDown 0.5s ease;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border: 2px solid #b1d8b7;
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border: 2px solid #f1b0b7;
+    color: #721c24;
+}
+
+.alert i {
+    font-size: 1.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .professor-cards {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .page-header h1 {
+        font-size: 2.8rem;
+    }
+    
+    .profile-header {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .profile-photo {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 60px 20px 40px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .page-header p {
+        font-size: 1.1rem;
+    }
+    
+    .professor-cards {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .card-header {
+        padding: 20px;
+    }
+    
+    .card-photo {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .card-stats {
+        gap: 15px;
+    }
+    
+    .grid-header h2 {
+        font-size: 2rem;
+    }
+    
+    .join-team {
+        padding: 40px 20px;
+    }
+    
+    .join-team h3 {
+        font-size: 1.8rem;
+    }
+    
+    .profile-header,
+    .profile-content {
+        padding: 25px;
+    }
+    
+    .academic-section h3 {
+        font-size: 1.5rem;
+    }
+    
+    .timeline {
+        padding-left: 30px;
+    }
+    
+    .timeline::before {
+        left: 10px;
+    }
+    
+    .timeline-year {
+        width: 50px;
+        height: 50px;
+        left: -30px;
+        font-size: 0.9rem;
+    }
+    
+    .contact-links {
+        flex-direction: column;
+    }
+    
+    .contact-link,
+    .contact-info {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .grid-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .professor-count {
+        font-size: 1rem;
+        padding: 6px 20px;
+    }
+    
+    .card-body,
+    .card-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .timeline-item {
+        padding: 20px;
+    }
+    
+    .experience-item {
+        padding: 20px;
+    }
+}
+
+/* ============================================
+   ANIMATIONS ET EFFETS SPÉCIAUX
+   ============================================ */
+
+.fade-in {
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 10px rgba(56, 163, 165, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(56, 163, 165, 0.8);
+    }
+}
+
+/* ============================================
+   BOUTONS PERSONNALISÉS
+   ============================================ */
+
+.btn-primary {
+    background: var(--professor-gradient);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: var(--professor-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(26, 60, 64, 0.3);
+}
+
+/* ============================================
+   UTILITAIRES
+   ============================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.mt-60 {
+    margin-top: 60px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.p-30 {
+    padding: 30px;
+}
+
+.bg-light {
+    background: var(--professor-light);
+}
+
+.bg-white {
+    background: white;
+}
+
+.rounded {
+    border-radius: var(--professor-radius);
+}
+
+.shadow {
+    box-shadow: var(--professor-shadow);
+}
+
+/* ============================================
+   SCROLLBAR PERSONNALISÉE
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--professor-light);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--professor-gradient);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--professor-secondary);
+}

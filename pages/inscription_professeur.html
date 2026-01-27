@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Professeur - ILA</title>
+    <link rel="stylesheet" href="../styles/variables.css">
+    <!--<link rel="stylesheet" href="../styles/main.css">-->
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="../assets/images/logos/favicon.ico">
+    
+</head>
+<body>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logos/logo_ILA.png" alt="Logo ILA - Institut de Linguistique Appliquée">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html"  >Accueil</a></li>
+            <li><a href="about.html" >À propos</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="recherche.html" >Recherche</a></li>
+            <li><a href="professeurs.html" >Professeurs</a></li>
+            <li><a href="ouvrages.html" >Ouvrages</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+                </li>
+            </ul>
+            <button class="menu-toggle" type="button" aria-label="Basculer le menu de navigation" title="Menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="auth-page">
+        <div class="auth-container">
+            <div class="auth-header">
+                <a href="../index.html" class="auth-logo">
+                    <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo" width="80">
+                </a>
+                <h1>Devenir Professeur Partenaire</h1>
+                <p class="auth-subtitle">Partagez vos connaissances et diffusez vos ouvrages</p>
+                <div class="professor-badge">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Accès à l'espace professeur</span>
+                </div>
+            </div>
+
+            <div class="auth-steps">
+                <div class="step active">
+                    <span class="step-number">1</span>
+                    <span class="step-text">Informations</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span class="step-text">Vérification</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-text">Validation</span>
+                </div>
+            </div>
+
+            <form id="professorRegistrationForm" class="auth-form" novalidate enctype="multipart/form-data" method="post">
+                <div class="form-section">
+                    <h3><i class="fas fa-id-card"></i> Identité académique</h3>
+                    
+                    <div class="form-group profile-photo-upload">
+                        <label>
+                            <i class="fas fa-camera"></i> Photo de profil
+                        </label>
+                        <div class="photo-upload-container">
+                            <div class="photo-preview" id="photoPreview">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Aucune photo sélectionnée</span>
+                            </div>
+                            <div class="photo-upload-controls">
+                                <label for="photo" class="btn-upload">
+                                    <i class="fas fa-upload"></i> Choisir une photo
+                                </label>
+                                <input type="file" id="photo" name="photo" accept="image/*" hidden>
+                                <small>Formats acceptés : JPG, PNG (max 5MB)</small>
+                            </div>
+                        </div>
+                        <div class="form-error" id="photo-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="titre_academique">
+                                <i class="fas fa-graduation-cap"></i> Titre académique
+                                <span class="required">*</span>
+                            </label>
+                            <select id="titre_academique" name="titre_academique" required>
+                                <option value="">Sélectionnez votre titre</option>
+                                <option value="professeur">Professeur des Universités</option>
+                                <option value="maitre_conf">Maître de Conférences</option>
+                                <option value="docteur">Docteur</option>
+                                <option value="chercheur">Chercheur</option>
+                                <option value="enseignant">Enseignant-Chercheur</option>
+                                <option value="autre">Autre titre académique</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="autre_titre_field" >
+                            <label for="autre_titre">
+                                <i class="fas fa-pen"></i> Précisez votre titre
+                            </label>
+                            <input type="text" id="autre_titre" name="autre_titre"
+                                   placeholder="Votre titre académique">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nom_complet">
+                            <i class="fas fa-user-tie"></i> Nom complet
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" id="nom_complet" name="nom_complet" required
+                               placeholder="Prénom et nom"
+                               pattern="[A-Za-zÀ-ÿ\s-]{5,}">
+                        <div class="form-error" id="nom_complet-error"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email_academique">
+                                <i class="fas fa-envelope"></i> Email académique
+                                <span class="required">*</span>
+                            </label>
+                            <input type="email" id="email_academique" name="email_academique" required
+                                   placeholder="prenom.nom@universite.education"
+                                   pattern=".*\.(edu|ac\..*|univ-.*)$">
+                            <div class="form-error" id="email_academique-error"></div>
+                            <small class="form-hint">Utilisez votre email institutionnel</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email_secondaire">
+                                <i class="fas fa-envelope-open"></i> Email secondaire
+                            </label>
+                            <input type="email" id="email_secondaire" name="email_secondaire"
+                                   placeholder="Email personnel (optionnel)">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="universites">
+                            <i class="fas fa-university"></i> Université(s) d'affiliation
+                            <span class="required">*</span>
+                        </label>
+                        <div class="multi-input">
+                            <input type="text" id="universite_input" 
+                                   placeholder="Ajouter une université">
+                            <button type="button" id="addUniversite" class="btn-small">
+                                <i class="fas fa-plus"></i> Ajouter
+                            </button>
+                        </div>
+                        <div id="universites_list" class="tags-container"></div>
+                        <input type="hidden" id="universites" name="universites">
+                        <small class="form-hint">Appuyez sur Entrée ou cliquez sur Ajouter</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i> Expérience académique</h3>
+                    
+                    <div class="dynamic-list" id="diplomes_list">
+                        <div class="list-header">
+                            <h4><i class="fas fa-graduation-cap"></i> Diplômes universitaires</h4>
+                            <button type="button" class="btn-small add-item" data-target="diplome">
+                                <i class="fas fa-plus"></i> Ajouter un diplôme
+                            </button>
+                        </div>
+                        
+                        <div class="list-items">
+                            <!-- Les diplômes seront ajoutés dynamiquement ici -->
+                        </div>
+                    </div>
+
+                    <div class="dynamic-list" id="experiences_list">
+                        <div class="list-header">
+                            <h4><i class="fas fa-history"></i> Expérience professionnelle</h4>
+                            <button type="button" class="btn-small add-item" data-target="experience">
+                                <i class="fas fa-plus"></i> Ajouter une expérience
+                            </button>
+                        </div>
+                        
+                        <div class="list-items">
+                            <!-- Les expériences seront ajoutés dynamiquement ici -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specialites">
+                            <i class="fas fa-search"></i> Domaines de recherche et expertise
+                            <span class="required">*</span>
+                        </label>
+                        <textarea id="specialites" name="specialites" required
+                                  placeholder="Décrivez vos domaines de recherche, expertise, spécialités..."
+                                  rows="4"></textarea>
+                        <div class="form-error" id="specialites-error"></div>
+                        <small class="form-hint">Séparez les domaines par des virgules</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">
+                            <i class="fas fa-file-alt"></i> Biographie académique
+                        </label>
+                        <textarea id="bio" name="bio"
+                                  placeholder="Présentez votre parcours, vos réalisations, vos publications..."
+                                  rows="6"></textarea>
+                        <small class="form-hint">Cette biographie apparaîtra sur votre page publique</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-network-wired"></i> Liens et contacts</h3>
+                    
+                    <div class="form-group">
+                        <label for="site_web">
+                            <i class="fas fa-globe"></i> Site web personnel
+                        </label>
+                        <input type="url" id="site_web" name="site_web"
+                               placeholder="https://votresite.com">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="linkedin_url">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </label>
+                            <input type="url" id="linkedin_url" name="linkedin_url"
+                                   placeholder="https://linkedin.com/in/votreprofil">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="google_scholar">
+                                <i class="fas fa-graduation-cap"></i> Google Scholar
+                            </label>
+                            <input type="url" id="google_scholar" name="google_scholar"
+                                   placeholder="https://scholar.google.com/citations?user=...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orcid">
+                            <i class="fas fa-fingerprint"></i> ORCID iD
+                        </label>
+                        <input type="text" id="orcid" name="orcid"
+                               placeholder="0000-0000-0000-0000"
+                               pattern="\d{4}-\d{4}-\d{4}-\d{4}">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telephone">
+                                <i class="fas fa-phone"></i> Téléphone
+                            </label>
+                            <input type="tel" id="telephone" name="telephone"
+                                   placeholder="+225 XX XX XX XX">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="disponibilite">
+                                <i class="fas fa-calendar-alt"></i> Disponibilité pour contact
+                            </label>
+                            <select id="disponibilite" name="disponibilite">
+                                <option value="">Sélectionnez</option>
+                                <option value="tous_jours">Tous les jours</option>
+                                <option value="jours_ouvres">Jours ouvrables</option>
+                                <option value="sur_rdv">Sur rendez-vous</option>
+                                <option value="limite">Disponibilité limitée</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-lock"></i> Sécurité du compte</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-key"></i> Mot de passe
+                                <span class="required">*</span>
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="password" name="password" required
+                                       placeholder="Minimum 12 caractères"
+                                       minlength="12"
+                                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$">
+                                <button type="button" class="password-toggle" aria-label="Afficher le mot de passe">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="form-error" id="password-error"></div>
+                            <div class="password-strength">
+                                <div class="strength-bar"></div>
+                                <div class="strength-text">Force du mot de passe</div>
+                                <ul class="password-requirements">
+                                    <li data-rule="length">Minimum 12caractères</li>
+                                    <li data-rule="uppercase">Une majuscule</li>
+                                    <li data-rule="lowercase">Une minuscule</li>
+                                    <li data-rule="number">Un chiffre</li>
+                                    <li data-rule="special">Un caractère spécial</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm_password">
+                                <i class="fas fa-key"></i> Confirmer le mot de passe
+                                <span class="required">*</span>
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="confirm_password" name="confirm_password" required
+                                       placeholder="Retapez votre mot de passe">
+                                <button type="button" class="password-toggle" aria-label="Afficher le mot de passe">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="form-error" id="confirm_password-error"></div>
+                            <div class="password-match valid">
+                                <i class="fas fa-check-circle"></i> <span>Les mots de passe correspondent</span>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-file-contract"></i> Conditions de partenariat</h3>
+                    
+                    <div class="terms-box">
+                        <div class="terms-content">
+                            <h4>Engagements du professeur partenaire :</h4>
+                            <ul>
+                                <li>Fournir des informations académiques exactes et vérifiables</li>
+                                <li>Respecter les droits d'auteur et les standards académiques</li>
+                                <li>Maintenir à jour les informations de son profil</li>
+                                <li>Fournir un contenu de qualité et scientifiquement valide</li>
+                                <li>Respecter les délais de publication convenus</li>
+                            </ul>
+                            
+                            <h4>Avantages :</h4>
+                            <ul>
+                                <li>Plateforme de diffusion professionnelle</li>
+                                <li>Statistiques détaillées sur vos ouvrages</li>
+                                <li>Commission sur les ventes</li>
+                                <li>Visibilité internationale</li>
+                                <li>Support technique dédié</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox agreement">
+                                <input type="checkbox" id="terms_prof" name="terms_prof" required>
+                                <span>Je certifie que les informations fournies sont exactes et 
+                                      j'accepte les <a href="conditions_professeurs.html" target="_blank">conditions de partenariat</a>
+                                      <span class="required">*</span></span>
+                            </label>
+                            <div class="form-error" id="terms_prof-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-lg">
+                        <i class="fas fa-chalkboard-teacher"></i> Devenir Professeur Partenaire
+                    </button>
+                    
+                    <div class="auth-divider">
+                        <span>Déjà partenaire ?</span>
+                    </div>
+                    
+                    <a href="connexion.html?type=professeur" class="btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i> Accéder à mon espace
+                    </a>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p>Les demandes d'inscription sont vérifiées manuellement sous 48h.</p>
+                <p>Besoin d'aide ? <a href="contact.html">Contactez notre équipe académique</a></p>
+            </div>
+        </div>
+
+        <div class="auth-sidebar">
+            <div class="sidebar-content">
+                <h2>Pourquoi devenir Professeur Partenaire ?</h2>
+                
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <i class="fas fa-book-open"></i>
+                        <div>
+                            <h3>500+</h3>
+                            <p>Ouvrages publiés</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-globe-africa"></i>
+                        <div>
+                            <h3>20+</h3>
+                            <p>Pays couverts</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>10K+</h3>
+                            <p>Lecteurs mensuels</p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="benefits-list">
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Statistiques avancées</h4>
+                            <p>Suivez les performances de vos ouvrages en temps réel</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-coins"></i>
+                        <div>
+                            <h4>Rémunération attractive</h4>
+                            <p>Commission compétitive sur chaque vente</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-tools"></i>
+                        <div>
+                            <h4>Outils de gestion</h4>
+                            <p>Interface intuitive pour gérer vos publications</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4>Protection des droits</h4>
+                            <p>Vos droits d'auteur sont entièrement protégés</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-bullhorn"></i>
+                        <div>
+                            <h4>Promotion ciblée</h4>
+                            <p>Vos ouvrages sont promus auprès du public concerné</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h4>Support dédié</h4>
+                            <p>Équipe technique et éditoriale à votre service</p>
+                        </div>
+                    </li>
+                </ul>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"Grâce à la plateforme ILA, mes recherches ont touché un public international. Les outils de suivi sont exceptionnels."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/50/1a3c40/ffffff?text=PD" alt="Photo de Prof. Diallo">
+                        <div>
+                            <h4>Prof. Diallo</h4>
+                            <span>Université de Montréal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- ... (même footer que les autres pages) ... -->
+       
+         <div class="footer-container">
+            <div class="footer-section">
+                <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo" class="footer-logo">
+                <p>Institut de Linguistique Appliquée d'Abidjan<br>
+                Université Félix Houphouët‑Boigny</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="about.html">À propos</a></li>
+                    <li><a href="missions.html">Missions</a></li>
+                    <li><a href="recherche.html">Recherche</a></li>
+                    <li><a href="professeurs.php">Professeurs</a></li>
+                    <li><a href="ouvrages.html">Ouvrages</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                <p><i class="fas fa-envelope"></i> contact@ila.edu</p>
+                <p><i class="fas fa-phone"></i>+225 01 40 54 40 00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Institut de Linguistique Appliquée d'Abidjan. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Templates pour les éléments dynamiques -->
+    <template id="diplomeTemplate">
+        <div class="dynamic-item" data-type="diplome">
+            <div class="item-header">
+                <span class="item-number">Diplôme #<span class="item-index">1</span></span>
+                <button type="button" class="btn-remove-item" aria-label="Supprimer ce diplôme">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="item-fields">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Année</label>
+                        <input type="number" name="diplome_annee[]" min="1950" max="2030" 
+                               placeholder="2020" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Diplôme</label>
+                        <input type="text" name="diplome_intitule[]" 
+                               placeholder="Doctorat en Sciences du Langage" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Institution</label>
+                    <input type="text" name="diplome_institution[]" 
+                             placeholder="Université de Montréal" required>
+                </div>
+                <div class="form-group">
+                    <label>Pays</label>
+                    <input type="text" name="diplome_pays[]" placeholder="Canada">
+                </div>
+                <div class="form-group">
+                    <label>Mention / Description</label>
+                    <textarea name="diplome_mention[]" rows="2" 
+                              placeholder="Mention Très Honorable avec félicitations"></textarea>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="experienceTemplate">
+        <div class="dynamic-item" data-type="experience">
+            <div class="item-header">
+                <span class="item-number">Expérience #<span class="item-index">1</span></span>
+                <button type="button" class="btn-remove-item" aria-label="Supprimer cette expérience">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="item-fields">
+                <div class="form-group">
+                    <label>Poste / Fonction</label>
+                    <input type="text" name="experience_poste[]" 
+                           placeholder="Professeur invité" required>
+                </div>
+                <div class="form-group">
+                    <label>Institution</label>
+                    <input type="text" name="experience_institution[]" 
+                           placeholder="Université la Sapienza de Rome" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date début</label>
+                        <input type="month" name="experience_debut[]">
+                    </div>
+                    <div class="form-group">
+                        <label>Date fin</label>
+                        <input type="month" name="experience_fin[]">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="experience_actuel[]"> Actuellement
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="experience_description[]" rows="3" 
+                              placeholder="Description des responsabilités et réalisations"></textarea>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal de confirmation -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-icon pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3>Demande envoyée !</h3>
+            <p>Votre candidature a été soumise avec succès.</p>
+            <p>Notre équipe académique va examiner votre profil sous <strong>48 heures</strong>.</p>
+            <p>Vous recevrez un email de confirmation à <strong id="profEmail"></strong>.</p>
+            <div class="modal-actions">
+                <a href="../index.html" class="btn-primary">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+                <a href="contact.html" class="btn-secondary">
+                    <i class="fas fa-envelope"></i> Nous contacter
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!--<script src="../scripts/auth-validation.js"></script>-->
+    <!--<script src="../scripts/inscription_professeur.js"></script>-->
+    <script src="../scripts/professor-form.js"></script>
+    
+    
+    <!-- Script pour la navigation responsive (si nécessaire) -->
+    <script>
+        // Gestion basique du menu mobile
+        document.querySelector('.menu-toggle')?.addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('show');
+        });
+    </script>
+    
+</body>
+</html>

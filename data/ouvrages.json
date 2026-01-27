@@ -1,0 +1,11 @@
+[
+{"type":"header","version":"5.2.0","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"ila_publications_db"},
+{"type":"table","name":"ouvrages","database":"ila_publications_db","data":
+[
+{"id":"1","professeur_id":"1","titre":"Afrique subsaharienne de l'Ouest\/Côte d'Ivoire : Pour une école moins exclusive des réalités socioculturelles et linguistiques locales","sous_titre":null,"slug":"afrique-subsaharienne-ouest-cote-divoire","isbn":null,"resume":null,"description":"École ivoirienne : héritages coloniaux, directives floues, réalités locales ignorées.","prix_promotion":null,"categorie_id":"1","couverture_url":"assets\/covers\/img_livre_JMK.jpg","fichier_pdf_url":null,"nombre_pages":null,"langue":"Français","editeur":null,"annee_publication":"2024","stock":"50","is_physical":"1","is_digital":"1","is_featured":"0","is_active":"1","views_count":"0","created_at":"2025-12-29 15:44:08","updated_at":"2026-01-12 19:23:44"},
+{"id":"2","professeur_id":"1","titre":"Langues africaines - Alternatives et Emprunts","sous_titre":null,"slug":"langues-africaines-alternatives-emprunts","isbn":null,"resume":null,"description":"Dictionnaire bilingue complet avec plus de 10 000 entrées.","prix_promotion":null,"categorie_id":"2","couverture_url":"assets\/covers\/img_livre_jmk2.jpg","fichier_pdf_url":null,"nombre_pages":null,"langue":"Français","editeur":null,"annee_publication":"2023","stock":"30","is_physical":"1","is_digital":"0","is_featured":"0","is_active":"1","views_count":"0","created_at":"2025-12-29 15:44:08","updated_at":"2026-01-12 19:24:30"},
+{"id":"3","professeur_id":"2","titre":"Cheminements linguistiques","sous_titre":null,"slug":"cheminements-linguistiques","isbn":null,"resume":null,"description":"Panorama complet des langues parlées en Côte d'Ivoire.","prix_promotion":null,"categorie_id":"3","couverture_url":"assets\/covers\/img_livre_NJK.png","fichier_pdf_url":null,"nombre_pages":null,"langue":"Français","editeur":null,"annee_publication":"2024","stock":"0","is_physical":"0","is_digital":"1","is_featured":"0","is_active":"1","views_count":"0","created_at":"2025-12-29 15:44:08","updated_at":"2026-01-12 19:24:43"}
+]
+}
+]

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missions - ILA</title>
+    <link rel="stylesheet" href="../styles/variables.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <link rel="stylesheet" href="../styles/pages/missions.css">
+    <link rel="icon" href="../assets/images/logos/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    
+    <nav class="navbar">
+    <div class="nav-container">
+        <a href="../index.html" class="logo">
+            <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo">
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="../index.html"  >Accueil</a></li>
+            <li><a href="about.html" >À propos</a></li>
+            <li><a href="missions.html" class="active">Missions</a></li>
+            <li><a href="recherche.html">Recherche</a></li>
+            <li><a href="professeurs.php">Professeurs</a></li>
+            <li><a href="ouvrages.html">Ouvrages</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            
+            <!-- Menu connexion -->
+            <li class="nav-auth-dropdown" id="authDropdown">
+                <!-- État non connecté -->
+                <div class="auth-container not-logged-in">
+                    <button class="auth-btn" id="authToggle">
+                        <i class="fas fa-user"></i>
+                        <span>Connexion</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="auth-dropdown-menu">
+                        <div class="auth-tabs">
+                            <!--<button class="auth-tab active" data-tab="client">
+                                <i class="fas fa-user-graduate"></i>
+                                Client
+                            </button>-->
+                            <button class="auth-tab" data-tab="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                        </div>
+                        
+                        <div class="auth-forms">
+                            <!-- Formulaire Client -->
+                            <!--<form class="auth-form active" id="clientForm" data-type="client">
+                                <h4>Connexion Client</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                                <div class="auth-divider">ou</div>
+                                <a href="inscription_client.html" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> Créer un compte
+                                </a>
+                            </form>-->
+
+                            <!--<br><br>-->
+                            <hr>
+                            <!--<br><br>-->
+                            
+                            <!-- Formulaire Professeur -->
+                            <form class="auth-form" id="professeurForm" data-type="professeur">
+                                <h4>Connexion Professeur</h4>
+                                
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email universitaire" required name="email" autocomplete="email">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required name="password" autocomplete="current-password">
+                                </div>
+                                
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="remember"> Se souvenir
+                                    </label>
+                                    <a href="pages/motdepasse_oublie.php" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Accéder à l'espace
+                                </button>
+                                
+                                <div class="auth-divider">ou</div>
+                                <a href="pages/inscription_professeur.php" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> S'inscrire comme professeur
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- État connecté (Client) -->
+                <!--<div class="auth-container logged-in client-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Jean Dupont</span>
+                            <span class="user-type">Client</span>
+                        </div>
+                        
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_client.html" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Mon compte
+                            </a>
+                            <a href="mes_commandes.html" class="user-menu-item">
+                                <i class="fas fa-shopping-bag"></i> Mes commandes
+                            </a>
+                            <a href="mes_favoris.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i> Mes favoris
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>-->
+                
+                <!-- État connecté (Professeur) -->
+                <div class="auth-container logged-in professeur-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar professor">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Prof. KOUAMÉ</span>
+                            <span class="user-type">Professeur</span>
+                        </div>
+                        <!-- Version corrigée -->
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                           <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_professeur.html" class="user-menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                            </a>
+                            <a href="mes_ouvrages.html" class="user-menu-item">
+                                <i class="fas fa-book"></i> Mes ouvrages
+                            </a>
+                            <a href="ajouter_ouvrage.html" class="user-menu-item">
+                                <i class="fas fa-plus-circle"></i> Ajouter un ouvrage
+                            </a>
+                            <a href="statistiques.html" class="user-menu-item">
+                                <i class="fas fa-chart-line"></i> Statistiques
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Panier (toujours visible) -->
+            <!--<li class="cart-icon">
+                <a href="panier.html" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>-->
+        </ul>
+        
+        <button class="menu-toggle" type="button" aria-label="Basculer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+    <main class="page-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="container">
+                <h1>Nos Missions</h1>
+                <p>Objectifs et engagements de l'Institut</p>
+            </div>
+        </div>
+
+        <!-- Mission Content -->
+        <section class="mission-content">
+            <div class="container">
+                <div class="mission-intro">
+                    <p>L'Institut de Linguistique Appliquée d'Abidjan s'engage à développer la linguistique appliquée à travers des missions stratégiques adaptées aux besoins de la Côte d'Ivoire et de l'Afrique. Nos actions visent à préserver, valoriser et développer le patrimoine linguistique ivoirien et africain.</p>
+                </div>
+                
+                <!-- Missions Principales -->
+                <div class="missions-section">
+                    <h2 class="section-title">Missions principales</h2>
+                    <div class="missions-grid">
+                        <!-- Mission 1 -->
+                        <div class="mission-card">
+                            <div class="mission-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>Formation</h3>
+                            <p>Assurer la formation initiale et continue dans les domaines de la linguistique et des sciences du langage.</p>
+                        </div>
+                        
+                        <!-- Mission 2 -->
+                        <div class="mission-card">
+                            <div class="mission-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3>Recherche Scientifique</h3>
+                            <p>Développer la recherche scientifique en linguistique appliquée et en linguistique descriptive.</p>
+                        </div>
+                        
+                        <!-- Mission 3 -->
+                        <div class="mission-card">
+                            <div class="mission-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>Documentation</h3>
+                            <p>Documenter, analyser et promouvoir les langues ivoiriennes et africaines.</p>
+                        </div>
+                        
+                        <!-- Mission 4 -->
+                        <div class="mission-card">
+                            <div class="mission-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h3>Ressources Linguistiques</h3>
+                            <p>Produire des ressources linguistiques (grammaires, dictionnaires, corpus, guides orthographiques) en langues locales ivoiriennes.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Domaines d'Action -->
+                <div class="domaines-section">
+                    <h2 class="section-title">Domaines d'action spécifiques</h2>
+                    <div class="domaines-grid">
+                        <!-- Domaine 1 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">01</div>
+                            <h3>Description scientifique</h3>
+                            <p>Description scientifique des langues ivoiriennes pour une documentation précise et rigoureuse.</p>
+                        </div>
+                        
+                        <!-- Domaine 2 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">02</div>
+                            <h3>Orthographe et écriture</h3>
+                            <p>Mise au point de l'orthographe de ces langues pour favoriser leur passage à l'écriture.</p>
+                        </div>
+                        
+                        <!-- Domaine 3 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">03</div>
+                            <h3>Enrichissement lexical</h3>
+                            <p>Enrichissement du vocabulaire de ces langues et dotation en métalangues et vocabulaire moderne pour rendre compte des éléments de développement.</p>
+                        </div>
+                        
+                        <!-- Domaine 4 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">04</div>
+                            <h3>Appui aux travaux pratiques</h3>
+                            <p>Appuyer tous les travaux allant de l'étude à l'utilisation pratique de ces langues nationales.</p>
+                        </div>
+                        
+                        <!-- Domaine 5 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">05</div>
+                            <h3>Enseignement du Français</h3>
+                            <p>Consolider l'enseignement et l'apprentissage du Français en contexte ivoirien.</p>
+                        </div>
+                        
+                        <!-- Domaine 6 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">06</div>
+                            <h3>Documents didactiques</h3>
+                            <p>Élaborer des documents didactiques pour le système scolaire et extrascolaire.</p>
+                        </div>
+                        
+                        <!-- Domaine 7 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">07</div>
+                            <h3>Recherches de terrain</h3>
+                            <p>Conduire des recherches de terrain pour une compréhension approfondie des pratiques linguistiques.</p>
+                        </div>
+                        
+                        <!-- Domaine 8 -->
+                        <div class="domaine-card">
+                            <div class="domaine-number">08</div>
+                            <h3>Politiques linguistiques</h3>
+                            <p>Contribuer à l'élaboration et à la mise en œuvre de politiques linguistiques, éducatives et culturelles.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Approche Méthodologique -->
+                <div class="approche-section">
+                    <div class="approche-content">
+                        <h2 class="section-title">Notre approche méthodologique</h2>
+                        <div class="approche-grid">
+                            <div class="approche-item">
+                                <i class="fas fa-users"></i>
+                                <h4>Collaboration</h4>
+                                <p>Travail en étroite collaboration avec les communautés locales et les experts traditionnels.</p>
+                            </div>
+                            <div class="approche-item">
+                                <i class="fas fa-microscope"></i>
+                                <h4>Rigueur scientifique</h4>
+                                <p>Application des méthodes scientifiques les plus rigoureuses dans toutes nos recherches.</p>
+                            </div>
+                            <div class="approche-item">
+                                <i class="fas fa-handshake"></i>
+                                <h4>Partage des savoirs</h4>
+                                <p>Diffusion et partage des connaissances avec les institutions éducatives et le grand public.</p>
+                            </div>
+                            <div class="approche-item">
+                                <i class="fas fa-sync-alt"></i>
+                                <h4>Approche intégrée</h4>
+                                <p>Combinaison de la recherche fondamentale et de l'application pratique des résultats.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo" class="footer-logo">
+                <p>Institut de Linguistique Appliquée d'Abidjan<br>
+                Université Félix Houphouët‑Boigny</p>
+            </div>
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Accueil</a></li>
+                    <li><a href="about.html">À propos</a></li>
+                    <li><a href="missions.html">Missions</a></li>
+                    <li><a href="recherche.html">Recherche</a></li>
+                    <li><a href="professeurs.php">Professeurs</a></li>
+                    <li><a href="ouvrages.html">Ouvrages</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                <p><i class="fas fa-envelope"></i> contact@ila.edu</p>
+                <p><i class="fas fa-phone"></i> +225 01 40 54 40 00</p>
+            </div>
+            <div class="footer-section">
+                <h3>Suivez-nous</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Institut de Linguistique Appliquée d'Abidjan. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script src="../scripts/auth-manager.js"></script>
+    <script src="../scripts/main.js"></script>
+   <!-- <script src="../scripts/cart.js"></script> -->
+    <!--<script src="../scripts/contact.js"></script>-->
+   
+</body>
+</html>

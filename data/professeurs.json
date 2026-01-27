@@ -1,0 +1,25 @@
+[
+    {
+        "id": 1,
+        "name": "Prof. KOIA Jean Martial KOUAME",
+        "title": "Professeur de Linguistique Générale",
+        "specialization": "Phonologie, Langues Kru",
+        "email": "",
+        "phone": "+225 01 23 45 67 89",
+        "bio": "Spécialiste des langues Kru, auteur de plusieurs grammaires de référence.",
+        "image": "assets/covers/img_prof_kouame.jpg",
+        "publications": [1, 4]
+    },
+    
+    {
+        "id": 2,
+        "name": "Prof. Jéremie KOUADIO N'Guessan",
+        "title": "Professeur de Sociolinguistique",
+        "specialization": "Politiques linguistiques, Planification",
+        "email": "",
+        "phone": "+225 05 67 89 12 34",
+        "bio": "Consultant pour plusieurs organisations internationales sur les politiques linguistiques.",
+        "image": "assets/covers/img_prof_kouadio.jpg",
+        "publications": [3]
+    }
+]
