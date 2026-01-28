@@ -474,39 +474,74 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <body>
     <!-- Navigation (identique à votre version HTML) -->
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo">
-            </a>
+    <div class="nav-container">
+        <a href="../index.html" class="logo">
+            <img src="../assets/images/logos/logo_ILA.png" alt="ILA Logo">
+        </a>
+        
+        <ul class="nav-menu">
+            <li><a href="../index.html" >Accueil</a></li>
+            <li><a href="about.html">À propos</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="recherche.html">Recherche</a></li>
+            <li><a href="professeurs.php" class="active">Professeurs</a></li>
+            <li><a href="ouvrages.html">Ouvrages</a></li>
+            <li><a href="contact.html">Contact</a></li>
             
-            <ul class="nav-menu">
-                <li><a href="../index.html">Accueil</a></li>
-                <li><a href="about.html">À propos</a></li>
-                <li><a href="missions.html">Missions</a></li>
-                <li><a href="recherche.html">Recherche</a></li>
-                <li><a href="professeurs.php" class="active">Professeurs</a></li>
-                <li><a href="ouvrages.html">Ouvrages</a></li>
-                <li><a href="contact.html">Contact</a></li>
+            <!-- Menu connexion -->
+            <li class="nav-auth-dropdown" id="authDropdown">
                 
-                <!-- Menu connexion (ajusté pour PHP) -->
-                <li class="nav-auth-dropdown" id="authDropdown">
-                    <div class="auth-container not-logged-in">
-                        <button class="auth-btn" id="authToggle">
-                            <i class="fas fa-user"></i>
-                            <span>Connexion</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
+                <!-- État non connecté -->
+                <div class="auth-container not-logged-in">
+                    <button class="auth-btn" id="authToggle">
+                        <i class="fas fa-user"></i>
+                        <span>Connexion</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div class="auth-dropdown-menu">
+                        <div class="auth-tabs">
+                            <!--<button class="auth-tab active" data-tab="client">
+                                <i class="fas fa-user-graduate"></i>
+                                Client
+                            </button>-->
+                            <button class="auth-tab" data-tab="professeur">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Professeur
+                            </button>
+                        </div>
                         
-                        <div class="auth-dropdown-menu">
-                            <div class="auth-tabs">
-                                <button class="auth-tab" data-tab="professeur">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                    Professeur
+                        <div class="auth-forms">
+                            <!-- Formulaire Client -->
+                            <!--<form class="auth-form active" id="clientForm" data-type="client">
+                                <h4>Connexion Client</h4>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" placeholder="Mot de passe" required>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox">
+                                        <input type="checkbox"> Se souvenir
+                                    </label>
+                                    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                                </div>
+                                <button type="submit" class="btn-auth-submit">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
                                 </button>
-                            </div>
+                                <div class="auth-divider">ou</div>
+                                <a href="pages/inscription_client.html" class="btn-auth-register">
+                                    <i class="fas fa-user-plus"></i> Créer un compte
+                                </a>
+                               
+                            </form>-->
                             
-                            <div class="auth-forms">
-                                <form class="auth-form" id="professeurForm" data-type="professeur">
+                            <!--<br><br>-->
+                            <hr>
+                            <!--<br><br>-->
+                            <!-- Formulaire Professeur -->
+                            <form class="auth-form" id="professeurForm" data-type="professeur" method="post">
                                 <h4>Connexion Professeur</h4>
                                 
                                 <div class="form-group">
@@ -521,7 +556,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                     <label class="checkbox">
                                         <input type="checkbox" name="remember"> Se souvenir
                                     </label>
-                                    <a href="motdepasse_oublie.php" class="forgot-password">Mot de passe oublié ?</a>
+                                    <a href="pages/motdepasse_oublie.html" class="forgot-password">Mot de passe oublié ?</a>
                                 </div>
                                 
                                 <button type="submit" class="btn-auth-submit">
@@ -529,21 +564,98 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                 </button>
                                 
                                 <div class="auth-divider">ou</div>
-                                <a href="inscription_professeur.php" class="btn-auth-register">
+                                <a href="pages/inscription_professeur.php" class="btn-auth-register">
                                     <i class="fas fa-user-plus"></i> S'inscrire comme professeur
                                 </a>
                             </form>
-                            </div>
                         </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+                
+                <!-- État connecté (Client) -->
+                <!--<div class="auth-container logged-in client-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Jean Dupont</span>
+                            <span class="user-type">Client</span>
+                        </div>
+                        
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_client.html" class="user-menu-item">
+                                <i class="fas fa-user-circle"></i> Mon compte
+                            </a>
+                            <a href="mes_commandes.html" class="user-menu-item">
+                                <i class="fas fa-shopping-bag"></i> Mes commandes
+                            </a>
+                            <a href="mes_favoris.html" class="user-menu-item">
+                                <i class="fas fa-heart"></i> Mes favoris
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <!-- État connecté (Professeur) -->
+                <div class="auth-container logged-in professeur-logged">
+                    <div class="user-profile">
+                        <div class="user-avatar professor">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">Prof. KOUAMÉ</span>
+                            <span class="user-type">Professeur</span>
+                        </div>
+                        <!-- Version corrigée -->
+                        <button class="user-menu-toggle" aria-label="Ouvrir le menu utilisateur" title="Menu utilisateur">
+                           <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        
+                        <div class="user-dropdown-menu">
+                            <a href="espace_professeur.html" class="user-menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+                            </a>
+                            <a href="mes_ouvrages.html" class="user-menu-item">
+                                <i class="fas fa-book"></i> Mes ouvrages
+                            </a>
+                            <a href="ajouter_ouvrage.html" class="user-menu-item">
+                                <i class="fas fa-plus-circle"></i> Ajouter un ouvrage
+                            </a>
+                            <a href="statistiques.html" class="user-menu-item">
+                                <i class="fas fa-chart-line"></i> Statistiques
+                            </a>
+                            <div class="user-menu-divider"></div>
+                            <button class="user-menu-item logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
             
-            <button class="menu-toggle" type="button" aria-label="Basculer le menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </nav>
+            <!-- Panier (toujours visible) -->
+            <!--<li class="cart-icon">
+                <a href="panier.html" id="cart-toggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </li>-->
+        </ul>
+        
+        <button class="menu-toggle" type="button" aria-label="Basculer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
 
     <main class="container">
         <?php if ($professeur_detail): ?>

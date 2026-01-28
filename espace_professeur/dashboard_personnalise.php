@@ -222,8 +222,8 @@ $nom = $nomParts[1] ?? $professeur['nom_complet'];
                     <?php endif; ?>
                 </div>
                 <div class="profile-info">
-                    <h3><?php echo htmlspecialchars($prenom . ' ' . substr($nom, 0, 15)); ?></h3>
-                    <span><?php echo htmlspecialchars(substr($professeur['titre_academique'] ?? 'Professeur', 0, 30)); ?></span>
+                    <h3><?php echo htmlspecialchars($prenom . ' ' . substr($nom, 0, 100)); ?></h3> <!--Taille d'affichage du Nom Complet-->
+                    <span><?php echo htmlspecialchars(substr($professeur['titre_academique'] ?? 'Professeur', 0, 255)); ?></span> <!--Taille d'affichage du Titre-->
                 </div>
             </div>
             
@@ -270,7 +270,7 @@ $nom = $nomParts[1] ?? $professeur['nom_complet'];
             </nav>
             
             <div class="sidebar-footer">
-                <p>© 2024 ILA Publications</p>
+                <p>© 2026 ILA Publications</p>
                 <p>Version 1.0.0</p>
             </div>
         </aside>
