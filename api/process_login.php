@@ -4,7 +4,15 @@
  * Fichier: api/process_login.php
  */
 
-require_once '../config/config.php';
+// Définir le chemin racine du projet (le dossier qui contient api/)
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
+
+// Activer l'affichage des erreurs pour le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 // Démarrer la session
 startSecureSession();

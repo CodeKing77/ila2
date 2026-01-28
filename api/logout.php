@@ -4,7 +4,15 @@
  * Fichier: api/logout.php
  */
 
-require_once '../config/config.php';
+// Définir le chemin racine du projet
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
+
+// Activer l'affichage des erreurs pour le débogage
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 // Démarrer la session
 startSecureSession();
@@ -65,7 +73,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Déconnexion réussie',
-        'redirect' => '../index.html'
+        'redirect' => '/site_ila/index.html'
     ], JSON_UNESCAPED_UNICODE);
     
 } catch (Exception $e) {

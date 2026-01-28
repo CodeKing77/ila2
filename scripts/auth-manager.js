@@ -1,8 +1,44 @@
-// auth-manager.js - VERSION FINALE CORRIGÉE
+// auth-manager.js  Modifie - VERSION AVEC CHEMINS DYNAMIQUES
 class AuthManager {
     constructor() {
         this.currentProfesseur = null;
+        this.basePath = this.detectBasePath();
+        console.log('🔧 Base path détecté:', this.basePath);
         this.init();
+    }
+
+    // Détecter automatiquement le chemin vers la racine du site
+    detectBasePath() {
+        const path = window.location.pathname;
+        
+        // Si on est dans index.html ou à la racine
+        if (path.endsWith('index.html') || path.endsWith('/') || path === '/site_ila' || path === '/site_ila/') {
+            return '';
+        }
+        
+        // Si on est dans pages/ ou espace_professeur/
+        if (path.includes('/pages/') || path.includes('/espace_professeur/')) {
+            return '..';
+        }
+        
+        // Par défaut
+        return '';
+    }
+
+    // Construire l'URL complète vers l'API
+    apiUrl(endpoint) {
+        if (this.basePath) {
+            return `${this.basePath}/api/${endpoint}`;
+        }
+        return `api/${endpoint}`;
+    }
+
+    // Construire l'URL complète vers la racine
+    rootUrl(path) {
+        if (this.basePath) {
+            return `${this.basePath}/${path}`;
+        }
+        return path;
     }
 
     init() {
@@ -119,7 +155,7 @@ class AuthManager {
                 this.showSuccess('Connexion réussie !');
                 
                 setTimeout(() => {
-                    window.location.href = response.redirect || 'espace_professeur/dashboard_personnalise.php';  // Creer ce fichier 
+                    window.location.href = this.rootUrl(response.redirect || 'espace_professeur/dashboard_personnalise.php');
                 }, 1000);
 
             } else {
@@ -139,10 +175,9 @@ class AuthManager {
         data.append('password', credentials.password);
         
         console.log('🔐 Tentative de connexion:', credentials.email);
+        console.log('🌐 URL API:', this.apiUrl('process_login.php'));
         
-        // 🔧 FIX FINAL: Chemin relatif à la racine du site (pas ../api/)
-        // Fonctionne que tu sois sur index.html ou dans un sous-dossier
-        const response = await fetch('api/process_login.php', {
+        const response = await fetch(this.apiUrl('process_login.php'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -179,18 +214,18 @@ class AuthManager {
         if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
             this.clearAuth();
             
-            // 🔧 FIX: Chemin relatif à la racine
-            fetch('api/logout.php', { method: 'POST' })
-                .then(() => {
+            fetch(this.apiUrl('logout.php'), { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
                     this.updateUI();
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = this.rootUrl('index.html');
                     }, 500);
                 })
                 .catch(error => {
                     console.error('Erreur lors de la déconnexion:', error);
                     this.updateUI();
-                    window.location.href = 'index.html';
+                    window.location.href = this.rootUrl('index.html');
                 });
         }
     }
@@ -390,8 +425,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.authManager = new AuthManager();
     
     function checkLoginStatus() {
-        // 🔧 FIX: Chemin relatif à la racine
-        fetch('api/check_session.php')
+        const apiUrl = window.authManager.apiUrl('check_session.php');
+        console.log('🔍 Vérification session via:', apiUrl);
+        
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 console.log('🔍 Session check:', data);

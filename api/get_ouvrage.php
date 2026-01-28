@@ -4,7 +4,9 @@
  * Fichier: api/get_ouvrage.php  nouveau fichier genere par claudeAI
  */
 
-require_once '../config/config.php';
+// Définir le chemin racine du projet
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
 
 // Activer l'affichage des erreurs pour le débogage
 ini_set('display_errors', 1);

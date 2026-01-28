@@ -4,7 +4,9 @@
  * Fichier: api/update_profil.php
  */
 
-require_once '../config/config.php';
+// Définir le chemin racine du projet
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
 
 // Démarrer la session
 startSecureSession();
@@ -144,7 +146,7 @@ function uploadPhoto($file, $professeur_id) {
     }
     
     // Créer le dossier s'il n'existe pas
-    $uploadDir = '../assets/uploads/professeurs/';
+    $uploadDir = '../assets/uploads/professeurs/';  //Peut etre modifier le chemin en 'assets/uploads/professeurs/'
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }

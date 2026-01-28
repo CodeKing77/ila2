@@ -1012,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Gestion de la soumission des formulaires (prévenir l'envoi par défaut pour le test)
-    const authFormsList = document.querySelectorAll('.auth-form');
+    /*const authFormsList = document.querySelectorAll('.auth-form');
     authFormsList.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1020,7 +1020,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Ici vous pouvez ajouter votre logique de soumission AJAX
             alert('Formulaire soumis - Cette fonctionnalité est en développement'); //Partie à remplacer par la logique réelle
         });
-    });
+    });*/
     
     // Fermer le dropdown lors du scroll
     window.addEventListener('scroll', function() {
