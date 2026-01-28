@@ -1,426 +1,360 @@
 /**
- * Gestionnaire complet du catalogue avec filtres
+ * Catalogue des ouvrages - ILA
+ * Affichage et filtrage dynamique des ouvrages
  */
 
-class CatalogueManager {
-    constructor() {
-        this.currentPage = 1;
-        this.currentFilters = {
-            categorie: 'all',
-            format: 'all',
-            search: '',
-            sort: 'date-desc'
-        };
+document.addEventListener('DOMContentLoaded', function() {
+    loadOuvrages();
+    initFilters();
+});
+
+let allOuvrages = [];
+let filteredOuvrages = [];
+let currentPage = 1;
+const itemsPerPage = 9;
+
+/**
+ * Charger les ouvrages depuis l'API
+ */
+async function loadOuvrages() {
+    try {
+        const response = await fetch('../api/get_ouvrages.php');
         
-        this.init();
-    }
-    
-    init() {
-        // Initialiser les filtres avec les valeurs par défaut
-        this.setupFilters();
-        
-        // Charger les ouvrages
-        this.loadOuvrages();
-    }
-    
-    setupFilters() {
-        // Catégorie
-        const categorieFilter = document.getElementById('categorieFilter');
-        if (categorieFilter) {
-            categorieFilter.value = this.currentFilters.categorie;
-            categorieFilter.addEventListener('change', (e) => {
-                this.currentFilters.categorie = e.target.value;
-                this.currentPage = 1;
-                this.loadOuvrages();
-            });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        // Format
-        const formatFilter = document.getElementById('formatFilter');
-        if (formatFilter) {
-            formatFilter.value = this.currentFilters.format;
-            formatFilter.addEventListener('change', (e) => {
-                this.currentFilters.format = e.target.value;
-                this.currentPage = 1;
-                this.loadOuvrages();
-            });
-        }
+        const data = await response.json();
         
-        // Tri
-        const sortSelect = document.getElementById('sortSelect');
-        if (sortSelect) {
-            sortSelect.value = this.currentFilters.sort;
-            sortSelect.addEventListener('change', (e) => {
-                this.currentFilters.sort = e.target.value;
-                this.currentPage = 1;
-                this.loadOuvrages();
-            });
-        }
-        
-        // Recherche
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.value = this.currentFilters.search;
-            
-            let searchTimeout;
-            searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    this.currentFilters.search = e.target.value;
-                    this.currentPage = 1;
-                    this.loadOuvrages();
-                }, 500);
-            });
-            
-            // Ajouter un bouton de recherche clair
-            searchInput.insertAdjacentHTML('afterend', 
-                '<button id="clearSearch" style="margin-left: 5px; padding: 5px 10px; display: none;">X</button>'
-            );
-            
-            document.getElementById('clearSearch').addEventListener('click', () => {
-                searchInput.value = '';
-                this.currentFilters.search = '';
-                this.currentPage = 1;
-                this.loadOuvrages();
-                document.getElementById('clearSearch').style.display = 'none';
-            });
-        }
-    }
-    
-    async loadOuvrages() {
-        try {
-            // Afficher le chargement
-            this.showLoading();
-            
-            // Construire l'URL avec les filtres
-            const params = new URLSearchParams();
-            params.append('page', this.currentPage);
-            params.append('limit', 9);
-            
-            // Ajouter les filtres seulement s'ils ne sont pas à la valeur par défaut
-            if (this.currentFilters.categorie !== 'all') {
-                params.append('categorie', this.currentFilters.categorie);
-            }
-            if (this.currentFilters.format !== 'all') {
-                params.append('format', this.currentFilters.format);
-            }
-            if (this.currentFilters.search !== '') {
-                params.append('search', this.currentFilters.search);
-                // Afficher le bouton de suppression
-                const clearBtn = document.getElementById('clearSearch');
-                if (clearBtn) clearBtn.style.display = 'inline-block';
-            }
-            if (this.currentFilters.sort !== 'date-desc') {
-                params.append('sort', this.currentFilters.sort);
-            }
-            
-            const apiUrl = `../api/get_ouvrages.php?${params.toString()}`;
-            console.log('Chargement depuis:', apiUrl);
-            
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            
-            if (data.success) {
-                this.renderOuvrages(data.data.ouvrages);
-                this.renderPagination(data.data.pagination);
-                this.updateResultsCount(data.data.pagination.total);
-                
-                // Mettre à jour l'info des filtres actifs
-                this.updateActiveFilters();
-            } else {
-                throw new Error(data.error || 'Erreur API');
-            }
-        } catch (error) {
-            console.error('Erreur:', error);
-            this.showError('Erreur de chargement: ' + error.message);
-        } finally {
-            this.hideLoading();
-        }
-    }
-    
-    renderOuvrages(ouvrages) {
-        // conserver la dernière liste pour retrouver un ouvrage par id
-        this.lastOuvrages = ouvrages || [];
-        const grid = document.getElementById('ouvragesGrid');
-        if (!grid) return;
-        
-        if (ouvrages.length === 0) {
-            grid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                    <i class="fas fa-book-open fa-3x" style="color: #ccc;"></i>
-                    <h3 style="color: #666;">Aucun ouvrage trouvé</h3>
-                    <p style="color: #888; margin-bottom: 1rem;">
-                        Aucun ouvrage ne correspond à vos critères de recherche.
-                    </p>
-                    <button onclick="catalogue.clearFilters()" 
-                            style="background: #4a8c6d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
-                        Réinitialiser les filtres
-                    </button>
-                </div>
-            `;
-            return;
-        }
-        
-        // Styles CSS en ligne pour simplifier
-        const styles = {
-            card: 'border: 1px solid #ddd; border-radius: 8px; padding: 1rem; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);',
-            title: 'color: #333; font-size: 1.2rem; margin-top: 0;',
-            description: 'color: #666; font-size: 0.9rem; line-height: 1.5;',
-            meta: 'color: #888; font-size: 0.85rem; margin: 0.5rem 0;',
-            category: 'display: inline-block; background: #4a8c6d; color: white; padding: 2px 8px; border-radius: 3px; font-size: 0.8rem;',
-            formatBadge: 'display: inline-block; background: #e9ecef; color: #495057; padding: 2px 8px; border-radius: 3px; font-size: 0.8rem; margin-right: 5px;',
-            footer: 'border-top: 1px solid #eee; padding-top: 1rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;',
-            price: 'font-weight: bold; color: #4a8c6d;',
-            button: 'background: #4a8c6d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.9rem;'
-        };
-        
-        grid.innerHTML = ouvrages.map(ouvrage => `
-            <div style="${styles.card}">
-                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
-                    <h3 style="${styles.title}">${ouvrage.titre}</h3>
-                    <span style="${styles.category}">${ouvrage.categorie.nom}</span>
-                </div>
-                
-                <p style="${styles.description}">${ouvrage.description || 'Pas de description disponible'}</p>
-                
-                <div style="${styles.meta}">
-                    <span style="margin-right: 1rem;">
-                        <i class="fas fa-calendar-alt"></i> ${ouvrage.annee}
-                    </span>
-                    <span>
-                        <i class="fas fa-language"></i> ${ouvrage.langue}
-                    </span>
-                </div>
-                
-                <div style="margin-bottom: 0.5rem;">
-                    ${ouvrage.isPhysical ? `<span style="${styles.formatBadge}"><i class="fas fa-book"></i> Physique</span>` : ''}
-                    ${ouvrage.isDigital ? `<span style="${styles.formatBadge}"><i class="fas fa-file-pdf"></i> Numérique</span>` : ''}
-                </div>
-                
-                <div style="${styles.footer}">
-                    <!--<div style="${styles.price}">
-                        ${ouvrage.prix ? ouvrage.prix + ' FCFA' : 'Gratuit'}
-                    </div>-->
-                    <div>
-                        <button onclick="catalogue.showDetails(${ouvrage.id})" style="${styles.button}">
-                            <i class="fas fa-eye"></i> Détails
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    renderPagination(pagination) {
-        const paginationEl = document.getElementById('pagination');
-        if (!paginationEl || pagination.totalPages <= 1) {
-            if (paginationEl) paginationEl.innerHTML = '';
-            return;
-        }
-        
-        let html = '';
-        const btnStyle = 'border: 1px solid #ddd; padding: 5px 10px; margin: 0 2px; background: white; cursor: pointer;';
-        const activeStyle = 'background: #4a8c6d; color: white; border-color: #4a8c6d;';
-        const disabledStyle = 'background: #f8f9fa; color: #6c757d; cursor: not-allowed;';
-        
-        // Bouton précédent
-        html += `
-            <button ${this.currentPage === 1 ? 'disabled' : ''} 
-                    onclick="catalogue.changePage(${this.currentPage - 1})"
-                    style="${btnStyle} ${this.currentPage === 1 ? disabledStyle : ''}">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-        `;
-        
-        // Pages
-        for (let i = 1; i <= pagination.totalPages; i++) {
-            if (i === 1 || i === pagination.totalPages || 
-                (i >= this.currentPage - 2 && i <= this.currentPage + 2)) {
-                html += `
-                    <button onclick="catalogue.changePage(${i})"
-                            style="${btnStyle} ${i === this.currentPage ? activeStyle : ''}">
-                        ${i}
-                    </button>
-                `;
-            } else if (i === this.currentPage - 3 || i === this.currentPage + 3) {
-                html += `<span style="padding: 5px 10px;">...</span>`;
-            }
-        }
-        
-        // Bouton suivant
-        html += `
-            <button ${this.currentPage === pagination.totalPages ? 'disabled' : ''} 
-                    onclick="catalogue.changePage(${this.currentPage + 1})"
-                    style="${btnStyle} ${this.currentPage === pagination.totalPages ? disabledStyle : ''}">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        `;
-        
-        paginationEl.innerHTML = html;
-    }
-    
-    changePage(page) {
-        if (page < 1) return;
-        this.currentPage = page;
-        this.loadOuvrages();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-    updateResultsCount(total) {
-        const countEl = document.getElementById('resultsCount');
-        if (countEl) {
-            countEl.textContent = `${total} ouvrage${total !== 1 ? 's' : ''} trouvé${total !== 1 ? 's' : ''}`;
-        }
-    }
-    
-    updateActiveFilters() {
-        // Afficher les filtres actifs
-        const activeFilters = [];
-        
-        if (this.currentFilters.categorie !== 'all') {
-            const categorieSelect = document.getElementById('categorieFilter');
-            const selectedOption = categorieSelect.options[categorieSelect.selectedIndex];
-            activeFilters.push(`Catégorie: ${selectedOption.text}`);
-        }
-        
-        if (this.currentFilters.format !== 'all') {
-            const formatSelect = document.getElementById('formatFilter');
-            const selectedOption = formatSelect.options[formatSelect.selectedIndex];
-            activeFilters.push(`Format: ${selectedOption.text}`);
-        }
-        
-        if (this.currentFilters.search !== '') {
-            activeFilters.push(`Recherche: "${this.currentFilters.search}"`);
-        }
-        
-        if (activeFilters.length > 0) {
-            // Créer ou mettre à jour la zone des filtres actifs
-            let filterInfo = document.getElementById('activeFilters');
-            if (!filterInfo) {
-                filterInfo = document.createElement('div');
-                filterInfo.id = 'activeFilters';
-                filterInfo.style.cssText = 'background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;';
-                document.querySelector('.filters-section').parentNode.insertBefore(filterInfo, document.querySelector('.results-info'));
-            }
-            
-            filterInfo.innerHTML = `
-                <strong>Filtres actifs:</strong> ${activeFilters.join(', ')}
-                <button onclick="catalogue.clearFilters()" 
-                        style="background: #6c757d; color: white; border: none; padding: 2px 8px; margin-left: 10px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">
-                    Tout effacer
-                </button>
-            `;
+        if (data.success && data.ouvrages) {
+            allOuvrages = data.ouvrages;
+            filteredOuvrages = [...allOuvrages];
+            displayOuvrages();
+            updateResultsCount();
         } else {
-            // Supprimer la zone des filtres actifs
-            const filterInfo = document.getElementById('activeFilters');
-            if (filterInfo) filterInfo.remove();
+            showError('Aucun ouvrage disponible pour le moment.');
         }
-    }
-    
-    clearFilters() {
-        // Réinitialiser les filtres
-        this.currentFilters = {
-            categorie: 'all',
-            format: 'all',
-            search: '',
-            sort: 'date-desc'
-        };
-        
-        // Réinitialiser les champs du formulaire
-        const categorieFilter = document.getElementById('categorieFilter');
-        const formatFilter = document.getElementById('formatFilter');
-        const searchInput = document.getElementById('searchInput');
-        const sortSelect = document.getElementById('sortSelect');
-        
-        if (categorieFilter) categorieFilter.value = 'all';
-        if (formatFilter) formatFilter.value = 'all';
-        if (searchInput) {
-            searchInput.value = '';
-            const clearBtn = document.getElementById('clearSearch');
-            if (clearBtn) clearBtn.style.display = 'none';
-        }
-        if (sortSelect) sortSelect.value = 'date-desc';
-        
-        // Supprimer la zone des filtres actifs
-        const filterInfo = document.getElementById('activeFilters');
-        if (filterInfo) filterInfo.remove();
-        
-        // Recharger
-        this.currentPage = 1;
-        this.loadOuvrages();
-    }
-    
-    showLoading() {
-        const grid = document.getElementById('ouvragesGrid');
-        if (grid) {
-            grid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="color: #4a8c6d;"></i>
-                    <p>Chargement des ouvrages...</p>
-                </div>
-            `;
-        }
-    }
-    
-    hideLoading() {
-        // Géré par renderOuvrages
-    }
-    
-    showError(message) {
-        const grid = document.getElementById('ouvragesGrid');
-        if (grid) {
-            grid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #dc3545;">
-                    <i class="fas fa-exclamation-triangle fa-2x"></i>
-                    <h3>Erreur de chargement</h3>
-                    <p>${message}</p>
-                    <button onclick="catalogue.loadOuvrages()" 
-                            style="background: #4a8c6d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 10px;">
-                        <i class="fas fa-redo"></i> Réessayer
-                    </button>
-                </div>
-            `;
-        }
-    }
-    
-    showDetails(ouvrageId) {
-        // Trouver l'ouvrage et ouvrir le lien externe si disponible, sinon page locale
-        const ouvrage = (this.lastOuvrages || []).find(o => o.id === ouvrageId);
-        if (!ouvrage) {
-            window.location.href = `detail_ouvrage.html?id=${ouvrageId}`;
-            return;
-        }
-
-        const external = this.getExternalLinkByTitle(ouvrage.titre);
-        if (external) {
-            window.open(external, '_blank', 'noopener,noreferrer');
-        } else {
-            window.location.href = `detail_ouvrage.html?id=${ouvrageId}`;
-        }
-    }
-
-    getExternalLinkByTitle(title) {
-        if (!title) return null;
-        const t = title.toLowerCase();
-
-        // Correspondances basées sur des mots-clés pour tolérer de légères variations de titre
-        if (t.includes('afrique subsaharienne') || (t.includes('cote') && t.includes('ivoire')) || t.includes('école moins exclusive')) {
-            return 'https://shs.cairn.info/revue-administration-et-education-2024-1-page-41?lang=fr';
-        }
-
-        if (t.includes('langues africaines')) {
-            return 'https://www.fabula.org/actualites/94668/kouame-koia-jean-martial-houmega-munseu-alida-kakou-foba-antoine-langues-africaines-alternances-et.html#:~:text=Langues%20africaines%20:%20alternances%20et%20emprunts%20est,Kouam%C3%A9%2C%20Munseu%20Alida%20Houm%C3%A9ga%2C%20Foba%20Antoine%20Kakou.';
-        }
-
-        if (t.includes('cheminements')) {
-            return 'https://www.eyrolles.com/Litterature/Livre/cheminements-linguistiques-9783841610836/';
-        }
-
-        return null;
+    } catch (error) {
+        console.error('Erreur lors du chargement des ouvrages:', error);
+        showError('Erreur lors du chargement des ouvrages. Veuillez réessayer.');
     }
 }
 
-// Initialisation
-document.addEventListener('DOMContentLoaded', () => {
-    window.catalogue = new CatalogueManager();
-});
+/**
+ * Afficher les ouvrages
+ */
+function displayOuvrages() {
+    const grid = document.getElementById('ouvragesGrid');
+    
+    if (!grid) return;
+    
+    // Vider la grille
+    grid.innerHTML = '';
+    
+    if (filteredOuvrages.length === 0) {
+        grid.innerHTML = '<p class="no-results">Aucun ouvrage ne correspond à vos critères.</p>';
+        return;
+    }
+    
+    // Pagination
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const ouvragesPage = filteredOuvrages.slice(start, end);
+    
+    // Afficher les ouvrages
+    ouvragesPage.forEach(ouvrage => {
+        const card = createOuvrageCard(ouvrage);
+        grid.appendChild(card);
+    });
+    
+    // Générer la pagination
+    generatePagination();
+}
+
+/**
+ * Créer une carte d'ouvrage
+ */
+function createOuvrageCard(ouvrage) {
+    const card = document.createElement('div');
+    card.className = 'ouvrage-card';
+    
+    // Image de couverture
+    const coverUrl = ouvrage.couverture_url || '../assets/covers/default-book.png';
+    
+    // Formats disponibles
+    const formats = [];
+    if (ouvrage.is_physical == 1) formats.push('Physique');
+    if (ouvrage.is_digital == 1) formats.push('Numérique');
+    
+    // Badge PDF si disponible
+    const pdfBadge = ouvrage.fichier_pdf_url ? 
+        '<span class="badge badge-pdf"><i class="fas fa-file-pdf"></i> PDF</span>' : '';
+    
+    // Badge stock
+    const stockBadge = ouvrage.stock > 0 ? 
+        `<span class="badge badge-stock">Stock: ${ouvrage.stock}</span>` : 
+        '<span class="badge badge-stock badge-out">Épuisé</span>';
+    
+    card.innerHTML = `
+        <div class="ouvrage-image">
+            <img src="../${coverUrl}" alt="${escapeHtml(ouvrage.titre)}" loading="lazy">
+            <div class="ouvrage-badges">
+                ${pdfBadge}
+                ${ouvrage.is_physical == 1 ? stockBadge : ''}
+            </div>
+        </div>
+        <div class="ouvrage-content">
+            <h3 class="ouvrage-title">${escapeHtml(ouvrage.titre)}</h3>
+            ${ouvrage.sous_titre ? `<p class="ouvrage-subtitle">${escapeHtml(ouvrage.sous_titre)}</p>` : ''}
+            <p class="ouvrage-author">
+                <i class="fas fa-user"></i> ${escapeHtml(ouvrage.auteur_nom || 'Auteur inconnu')}
+            </p>
+            ${ouvrage.resume ? `<p class="ouvrage-resume">${escapeHtml(truncateText(ouvrage.resume, 120))}</p>` : ''}
+            <div class="ouvrage-meta">
+                <span class="meta-item">
+                    <i class="fas fa-tag"></i> ${escapeHtml(ouvrage.categorie_nom || 'Non catégorisé')}
+                </span>
+                ${ouvrage.annee_publication ? `
+                <span class="meta-item">
+                    <i class="fas fa-calendar"></i> ${ouvrage.annee_publication}
+                </span>` : ''}
+                ${ouvrage.nombre_pages ? `
+                <span class="meta-item">
+                    <i class="fas fa-book-open"></i> ${ouvrage.nombre_pages} pages
+                </span>` : ''}
+            </div>
+            <div class="ouvrage-formats">
+                ${formats.map(f => `<span class="format-badge">${f}</span>`).join('')}
+            </div>
+            <div class="ouvrage-actions">
+                ${ouvrage.fichier_pdf_url ? `
+                <a href="../${ouvrage.fichier_pdf_url}" target="_blank" class="btn btn-primary btn-small" download>
+                    <i class="fas fa-download"></i> Télécharger PDF
+                </a>` : ''}
+                <button class="btn btn-secondary btn-small" onclick="viewDetails(${ouvrage.id})">
+                    <i class="fas fa-info-circle"></i> Détails
+                </button>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+/**
+ * Initialiser les filtres
+ */
+function initFilters() {
+    const categorieFilter = document.getElementById('categorieFilter');
+    const formatFilter = document.getElementById('formatFilter');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    
+    if (categorieFilter) {
+        categorieFilter.addEventListener('change', applyFilters);
+    }
+    
+    if (formatFilter) {
+        formatFilter.addEventListener('change', applyFilters);
+    }
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(applyFilters, 300));
+    }
+    
+    if (sortSelect) {
+        sortSelect.addEventListener('change', applySort);
+    }
+}
+
+/**
+ * Appliquer les filtres
+ */
+function applyFilters() {
+    const categorie = document.getElementById('categorieFilter')?.value || 'all';
+    const format = document.getElementById('formatFilter')?.value || 'all';
+    const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    
+    filteredOuvrages = allOuvrages.filter(ouvrage => {
+        // Filtre par catégorie
+        if (categorie !== 'all') {
+            const catNom = (ouvrage.categorie_nom || '').toLowerCase();
+            if (!catNom.includes(categorie.toLowerCase())) {
+                return false;
+            }
+        }
+        
+        // Filtre par format
+        if (format !== 'all') {
+            if (format === 'numerique' && ouvrage.is_digital != 1) {
+                return false;
+            }
+            if (format === 'physique' && ouvrage.is_physical != 1) {
+                return false;
+            }
+        }
+        
+        // Filtre par recherche
+        if (search) {
+            const titre = (ouvrage.titre || '').toLowerCase();
+            const auteur = (ouvrage.auteur_nom || '').toLowerCase();
+            const description = (ouvrage.description || '').toLowerCase();
+            const resume = (ouvrage.resume || '').toLowerCase();
+            
+            if (!titre.includes(search) && 
+                !auteur.includes(search) && 
+                !description.includes(search) &&
+                !resume.includes(search)) {
+                return false;
+            }
+        }
+        
+        return true;
+    });
+    
+    currentPage = 1;
+    displayOuvrages();
+    updateResultsCount();
+}
+
+/**
+ * Appliquer le tri
+ */
+function applySort() {
+    const sort = document.getElementById('sortSelect')?.value || 'date-desc';
+    
+    filteredOuvrages.sort((a, b) => {
+        switch(sort) {
+            case 'date-desc':
+                return new Date(b.created_at) - new Date(a.created_at);
+            case 'date-asc':
+                return new Date(a.created_at) - new Date(b.created_at);
+            case 'titre-asc':
+                return (a.titre || '').localeCompare(b.titre || '');
+            case 'titre-desc':
+                return (b.titre || '').localeCompare(a.titre || '');
+            default:
+                return 0;
+        }
+    });
+    
+    displayOuvrages();
+}
+
+/**
+ * Générer la pagination
+ */
+function generatePagination() {
+    const paginationDiv = document.getElementById('pagination');
+    
+    if (!paginationDiv) return;
+    
+    const totalPages = Math.ceil(filteredOuvrages.length / itemsPerPage);
+    
+    if (totalPages <= 1) {
+        paginationDiv.innerHTML = '';
+        return;
+    }
+    
+    let html = '<button class="btn-page" ' + 
+               (currentPage === 1 ? 'disabled' : '') + 
+               ' onclick="changePage(' + (currentPage - 1) + ')">Précédent</button>';
+    
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+            html += '<button class="btn-page ' + (i === currentPage ? 'active' : '') + 
+                    '" onclick="changePage(' + i + ')">' + i + '</button>';
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+            html += '<span class="pagination-ellipsis">...</span>';
+        }
+    }
+    
+    html += '<button class="btn-page" ' + 
+            (currentPage === totalPages ? 'disabled' : '') + 
+            ' onclick="changePage(' + (currentPage + 1) + ')">Suivant</button>';
+    
+    paginationDiv.innerHTML = html;
+}
+
+/**
+ * Changer de page
+ */
+function changePage(page) {
+    const totalPages = Math.ceil(filteredOuvrages.length / itemsPerPage);
+    
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    displayOuvrages();
+    
+    // Scroll vers le haut de la grille
+    document.getElementById('ouvragesGrid')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+/**
+ * Mettre à jour le compteur de résultats
+ */
+function updateResultsCount() {
+    const resultsCount = document.getElementById('resultsCount');
+    if (resultsCount) {
+        const count = filteredOuvrages.length;
+        resultsCount.textContent = `${count} ouvrage${count > 1 ? 's' : ''} trouvé${count > 1 ? 's' : ''}`;
+    }
+}
+
+/**
+ * Afficher les détails d'un ouvrage (à implémenter)
+ */
+function viewDetails(ouvrageId) {
+    // Rediriger vers une page de détails ou ouvrir un modal
+    console.log('Voir détails ouvrage:', ouvrageId);
+    // window.location.href = `ouvrage-detail.html?id=${ouvrageId}`;
+    alert('Fonctionnalité en cours de développement');
+}
+
+/**
+ * Afficher une erreur
+ */
+function showError(message) {
+    const grid = document.getElementById('ouvragesGrid');
+    if (grid) {
+        grid.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>${message}</p>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Fonctions utilitaires
+ */
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function truncateText(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substr(0, maxLength) + '...';
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Rendre certaines fonctions globales
+window.changePage = changePage;
+window.viewDetails = viewDetails;

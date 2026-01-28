@@ -487,6 +487,33 @@ $nom = $nomParts[1] ?? $professeur['nom_complet'];
                     <small style="color: #666;">Formats acceptés: JPG, PNG, WEBP (max 2Mo)</small>
                 </div>
                 
+                <div class="form-group">
+                    <label for="fichier_pdf">Fichier PDF de l'ouvrage</label>
+                    <input type="file" id="fichier_pdf" name="fichier_pdf" accept=".pdf,application/pdf">
+                    <small style="color: #666;">Format PDF uniquement (max 10Mo)</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="is_physical" name="is_physical" value="1" checked>
+                            Version physique disponible
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="is_digital" name="is_digital" value="1">
+                            Version numérique disponible
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="stock_group">
+                    <label for="stock">Stock disponible</label>
+                    <input type="number" id="stock" name="stock" min="0" value="0">
+                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeModal('modalOuvrage')">Annuler</button>
                     <button type="submit" class="btn-primary" id="btnSubmitOuvrage">
@@ -674,6 +701,9 @@ $nom = $nomParts[1] ?? $professeur['nom_complet'];
                     document.getElementById('editeur').value = ouvrage.editeur || '';
                     document.getElementById('nombre_pages').value = ouvrage.nombre_pages || '';
                     document.getElementById('langue').value = ouvrage.langue || 'Français';
+                    document.getElementById('is_physical').checked = ouvrage.is_physical == 1;
+                    document.getElementById('is_digital').checked = ouvrage.is_digital == 1;
+                    document.getElementById('stock').value = ouvrage.stock || 0;
                     
                     document.getElementById('modalOuvrageTitle').innerHTML = 
                         '<i class="fas fa-edit"></i> Modifier l\'ouvrage';

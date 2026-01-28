@@ -2,8 +2,7 @@
 /**
  * API de gestion des ouvrages
  * Fichier: api/manage_ouvrages.php
- * 
- */  
+ */
 
 // Activer l'affichage des erreurs pour le débogage
 ini_set('display_errors', 1);
@@ -52,6 +51,9 @@ if ($action === 'add') {
         $editeur = isset($_POST['editeur']) ? trim($_POST['editeur']) : null;
         $nombre_pages = isset($_POST['nombre_pages']) ? intval($_POST['nombre_pages']) : null;
         $langue = isset($_POST['langue']) ? trim($_POST['langue']) : 'Français';
+        $is_physical = isset($_POST['is_physical']) ? 1 : 0;
+        $is_digital = isset($_POST['is_digital']) ? 1 : 0;
+        $stock = isset($_POST['stock']) ? intval($_POST['stock']) : 0;
         
         // Validation
         if (empty($titre)) {
@@ -77,16 +79,29 @@ if ($action === 'add') {
             }
         }
         
+        // Gestion de l'upload du PDF
+        $fichier_pdf_url = null;
+        if (isset($_FILES['fichier_pdf']) && $_FILES['fichier_pdf']['error'] === UPLOAD_ERR_OK) {
+            $uploadResult = uploadPDF($_FILES['fichier_pdf']);
+            if ($uploadResult['success']) {
+                $fichier_pdf_url = $uploadResult['path'];
+            } else {
+                sendJsonResponse(false, $uploadResult['error']);
+            }
+        }
+        
         // Insertion dans la base de données
         $stmt = $pdo->prepare("
             INSERT INTO ouvrages (
                 professeur_id, titre, sous_titre, slug, categorie_id,
                 annee_publication, resume, description, isbn, editeur,
-                nombre_pages, langue, couverture_url, is_active, created_at
+                nombre_pages, langue, couverture_url, fichier_pdf_url,
+                is_physical, is_digital, stock, is_active, created_at
             ) VALUES (
                 :professeur_id, :titre, :sous_titre, :slug, :categorie_id,
                 :annee_publication, :resume, :description, :isbn, :editeur,
-                :nombre_pages, :langue, :couverture_url, 1, NOW()
+                :nombre_pages, :langue, :couverture_url, :fichier_pdf_url,
+                :is_physical, :is_digital, :stock, 1, NOW()
             )
         ");
         
@@ -103,7 +118,11 @@ if ($action === 'add') {
             'editeur' => $editeur,
             'nombre_pages' => $nombre_pages,
             'langue' => $langue,
-            'couverture_url' => $couverture_url
+            'couverture_url' => $couverture_url,
+            'fichier_pdf_url' => $fichier_pdf_url,
+            'is_physical' => $is_physical,
+            'is_digital' => $is_digital,
+            'stock' => $stock
         ]);
         
         sendJsonResponse(true, 'Ouvrage ajouté avec succès', ['id' => $pdo->lastInsertId()]);
@@ -126,7 +145,7 @@ else if ($action === 'edit') {
         }
         
         // Vérifier que l'ouvrage appartient au professeur
-        $checkStmt = $pdo->prepare("SELECT id, couverture_url FROM ouvrages WHERE id = :id AND professeur_id = :professeur_id");
+        $checkStmt = $pdo->prepare("SELECT id, couverture_url, fichier_pdf_url FROM ouvrages WHERE id = :id AND professeur_id = :professeur_id");
         $checkStmt->execute(['id' => $ouvrage_id, 'professeur_id' => $professeur_id]);
         $ouvrage = $checkStmt->fetch();
         
@@ -145,6 +164,9 @@ else if ($action === 'edit') {
         $editeur = isset($_POST['editeur']) ? trim($_POST['editeur']) : null;
         $nombre_pages = isset($_POST['nombre_pages']) ? intval($_POST['nombre_pages']) : null;
         $langue = isset($_POST['langue']) ? trim($_POST['langue']) : 'Français';
+        $is_physical = isset($_POST['is_physical']) ? 1 : 0;
+        $is_digital = isset($_POST['is_digital']) ? 1 : 0;
+        $stock = isset($_POST['stock']) ? intval($_POST['stock']) : 0;
         
         if (empty($titre)) {
             sendJsonResponse(false, 'Le titre est requis');
@@ -164,6 +186,22 @@ else if ($action === 'edit') {
             }
         }
         
+        // Gestion du PDF
+        $fichier_pdf_url = $ouvrage['fichier_pdf_url'];
+        if (isset($_FILES['fichier_pdf']) && $_FILES['fichier_pdf']['error'] === UPLOAD_ERR_OK) {
+            // Supprimer l'ancien PDF
+            if (!empty($ouvrage['fichier_pdf_url']) && file_exists('../' . $ouvrage['fichier_pdf_url'])) {
+                @unlink('../' . $ouvrage['fichier_pdf_url']);
+            }
+            
+            $uploadResult = uploadPDF($_FILES['fichier_pdf']);
+            if ($uploadResult['success']) {
+                $fichier_pdf_url = $uploadResult['path'];
+            } else {
+                sendJsonResponse(false, $uploadResult['error']);
+            }
+        }
+        
         // Mise à jour
         $stmt = $pdo->prepare("
             UPDATE ouvrages SET
@@ -178,6 +216,10 @@ else if ($action === 'edit') {
                 nombre_pages = :nombre_pages,
                 langue = :langue,
                 couverture_url = :couverture_url,
+                fichier_pdf_url = :fichier_pdf_url,
+                is_physical = :is_physical,
+                is_digital = :is_digital,
+                stock = :stock,
                 updated_at = NOW()
             WHERE id = :id AND professeur_id = :professeur_id
         ");
@@ -194,6 +236,10 @@ else if ($action === 'edit') {
             'nombre_pages' => $nombre_pages,
             'langue' => $langue,
             'couverture_url' => $couverture_url,
+            'fichier_pdf_url' => $fichier_pdf_url,
+            'is_physical' => $is_physical,
+            'is_digital' => $is_digital,
+            'stock' => $stock,
             'id' => $ouvrage_id,
             'professeur_id' => $professeur_id
         ]);
@@ -218,7 +264,7 @@ else if ($action === 'delete') {
         }
         
         // Vérifier que l'ouvrage appartient au professeur
-        $checkStmt = $pdo->prepare("SELECT id, couverture_url FROM ouvrages WHERE id = :id AND professeur_id = :professeur_id");
+        $checkStmt = $pdo->prepare("SELECT id, couverture_url, fichier_pdf_url FROM ouvrages WHERE id = :id AND professeur_id = :professeur_id");
         $checkStmt->execute(['id' => $ouvrage_id, 'professeur_id' => $professeur_id]);
         $ouvrage = $checkStmt->fetch();
         
@@ -229,6 +275,11 @@ else if ($action === 'delete') {
         // Supprimer l'image de couverture
         if (!empty($ouvrage['couverture_url']) && file_exists('../' . $ouvrage['couverture_url'])) {
             @unlink('../' . $ouvrage['couverture_url']);
+        }
+        
+        // Supprimer le fichier PDF
+        if (!empty($ouvrage['fichier_pdf_url']) && file_exists('../' . $ouvrage['fichier_pdf_url'])) {
+            @unlink('../' . $ouvrage['fichier_pdf_url']);
         }
         
         // Supprimer de la base de données
@@ -317,4 +368,48 @@ function uploadCouverture($file) {
     }
     
     return ['success' => false, 'error' => 'Erreur lors de l\'upload'];
+}
+
+/**
+ * Upload du fichier PDF
+ */
+function uploadPDF($file) {
+    $maxSize = 10 * 1024 * 1024; // 10 Mo
+    $allowedTypes = ['application/pdf'];
+    
+    // Vérifications
+    if ($file['size'] > $maxSize) {
+        return ['success' => false, 'error' => 'Fichier PDF trop volumineux (max 10Mo)'];
+    }
+    
+    if (!in_array($file['type'], $allowedTypes)) {
+        return ['success' => false, 'error' => 'Format non autorisé. Seul le PDF est accepté'];
+    }
+    
+    // Vérifier l'extension
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if ($extension !== 'pdf') {
+        return ['success' => false, 'error' => 'Extension de fichier invalide'];
+    }
+    
+    // Créer le dossier s'il n'existe pas
+    $uploadDir = '../assets/pdfs/';
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+    
+    // Générer un nom unique
+    $filename = 'ouvrage_' . time() . '_' . uniqid() . '.pdf';
+    $destination = $uploadDir . $filename;
+    
+    // Déplacer le fichier
+    if (move_uploaded_file($file['tmp_name'], $destination)) {
+        return [
+            'success' => true,
+            'path' => 'assets/pdfs/' . $filename,
+            'filename' => $filename
+        ];
+    }
+    
+    return ['success' => false, 'error' => 'Erreur lors de l\'upload du PDF'];
 }
