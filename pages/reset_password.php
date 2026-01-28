@@ -320,6 +320,34 @@
     </div>
 
     <script>
+        // ============================================
+        // DÉTECTION DYNAMIQUE DES CHEMINS
+        // ============================================
+        
+        function getApiPath() {
+            const path = window.location.pathname;
+            if (path.includes('/pages/')) {
+                return 'motdepasse_oublie.php';
+            }
+            return 'pages/motdepasse_oublie.php';
+        }
+
+        function getRootPath() {
+            const path = window.location.pathname;
+            if (path.includes('/pages/')) {
+                return '../index.html';
+            }
+            return 'index.html';
+        }
+
+        const backLink = document.querySelector('.back-link a');
+        if (backLink) {
+            backLink.href = getRootPath();
+        }
+
+        console.log('🔧 Chemin API détecté:', getApiPath());
+        console.log('🏠 Chemin racine détecté:', getRootPath());
+
         // Récupérer le token depuis l'URL
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
@@ -336,7 +364,7 @@
         // Vérifier la validité du token
         async function verifyToken(token) {
             try {
-                const response = await fetch('../pages/motdepasse_oublie.php', {
+                const response = await fetch(getApiPath(), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -386,7 +414,7 @@
                 const formData = new FormData(e.target);
                 formData.append('action', 'reset_password');
 
-                const response = await fetch('../pages/motdepasse_oublie.php', {
+                const response = await fetch(getApiPath(), {
                     method: 'POST',
                     body: new URLSearchParams(formData)
                 });
@@ -397,7 +425,7 @@
                     showAlert('success', data.message);
                     document.getElementById('resetForm').style.display = 'none';
                     setTimeout(() => {
-                        window.location.href = '../index.html';
+                        window.location.href = getRootPath();
                     }, 2000);
                 } else {
                     showAlert('danger', data.message);

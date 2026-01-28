@@ -4,7 +4,9 @@
  * Fichier: page/motdepasse_oublie.php
  */
 
-require_once '../config/config.php';
+// Définir le chemin racine du projet (le dossier qui contient pages/)
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
 
 // Démarrer la session
 startSecureSession();

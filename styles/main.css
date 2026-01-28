@@ -31,7 +31,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-sm) var(--spacing-md);
+    /*padding: var(--spacing-sm) var(--spacing-md);*/
     max-width: 1200px;
     margin: 0 auto;
 }
