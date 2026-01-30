@@ -1,36 +1,98 @@
 <?php
 /**
- * API pour récupérer les ouvrages - Version finale --Premier fichier des get_ouvrages - Generes par deepseek , avant claude
+ * API pour récupérer les ouvrages (liste) ou un ouvrage spécifique
+ * Fichier: api/get_ouvrages.php
+ * FIchier fusionné le: 29-01-2026 avec api/get_ouvrage.php
  */
+
+// Définir le chemin racine du projet
+define('ROOT_PATH', dirname(__DIR__));
+require_once ROOT_PATH . '/config/config.php';
 
 // Activer l'affichage des erreurs pour le débogage
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
-// Configuration de la base de données (directement ici pour simplifier)
-$host = 'localhost';
-$dbname = 'ila_publications_db';
-$username = 'root';
-$password = '';
+// ===========================================
+// MODE 1 : RÉCUPÉRER UN SEUL OUVRAGE PAR ID
+// ===========================================
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    
+    // Démarrer la session pour vérifier l'authentification
+    startSecureSession();
+    
+    // Vérifier l'authentification (requis pour modifier)
+    if (!isLoggedIn() || !validateSession()) {
+        sendJsonResponse(false, 'Non autorisé');
+        exit;
+    }
+    
+    $ouvrage_id = intval($_GET['id']);
+    
+    if (!$ouvrage_id) {
+        sendJsonResponse(false, 'ID invalide');
+        exit;
+    }
+    
+    // Connexion DB
+    $pdo = getDbConnection();
+    if (!$pdo) {
+        sendJsonResponse(false, 'Erreur de connexion à la base de données');
+        exit;
+    }
+    
+    try {
+        // Récupérer l'ouvrage (vérifier qu'il appartient au professeur connecté)
+        $stmt = $pdo->prepare("
+            SELECT 
+                o.*,
+                c.nom as categorie_nom
+            FROM ouvrages o
+            LEFT JOIN categories_ouvrages c ON o.categorie_id = c.id
+            WHERE o.id = :id 
+            AND o.professeur_id = :professeur_id
+            LIMIT 1
+        ");
+        
+        $stmt->execute([
+            'id' => $ouvrage_id,
+            'professeur_id' => $_SESSION['professeur_id']
+        ]);
+        
+        $ouvrage = $stmt->fetch();
+        
+        if (!$ouvrage) {
+            sendJsonResponse(false, 'Ouvrage non trouvé ou non autorisé');
+            exit;
+        }
+        
+        sendJsonResponse(true, 'Ouvrage récupéré', ['ouvrage' => $ouvrage]);
+        exit;
+        
+    } catch (PDOException $e) {
+        error_log("Erreur get_ouvrage: " . $e->getMessage());
+        sendJsonResponse(false, 'Erreur lors de la récupération de l\'ouvrage: ' . $e->getMessage());
+        exit;
+    }
+}
+
+// ===========================================
+// MODE 2 : RÉCUPÉRER LA LISTE DES OUVRAGES
+// ===========================================
 
 try {
-    // Connexion directe à la base de données
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-        $username,
-        $password,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false
-        ]
-    );
+    // Configuration de la base de données
+    $pdo = getDbConnection();
+    
+    if (!$pdo) {
+        throw new Exception('Erreur de connexion à la base de données');
+    }
     
     // Récupérer les paramètres de la requête
     $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
@@ -43,18 +105,23 @@ try {
     $search = isset($_GET['search']) ? trim($_GET['search']) : '';
     $sort = isset($_GET['sort']) ? $_GET['sort'] : 'date-desc';
     
-    // Construction de la requête SQL
-    $sql = "SELECT o.*, c.nom as categorie_nom, c.couleur as categorie_couleur 
+    // Construction de la requête SQL avec informations professeur
+    $sql = "SELECT o.*, 
+            c.nom as categorie_nom, 
+            c.couleur as categorie_couleur,
+            p.nom_complet as auteur_nom,
+            p.titre_academique as auteur_titre
             FROM ouvrages o 
             LEFT JOIN categories_ouvrages c ON o.categorie_id = c.id 
+            LEFT JOIN professeurs p ON o.professeur_id = p.id
             WHERE o.is_active = 1";
     
     $params = [];
     
     // Filtre par catégorie
     if ($categorie !== 'all' && in_array($categorie, ['scientifique', 'didactique', 'culturel'])) {
-        $sql .= " AND c.slug = :categorie";
-        $params[':categorie'] = $categorie;
+        $sql .= " AND LOWER(c.nom) LIKE :categorie";
+        $params[':categorie'] = "%" . strtolower($categorie) . "%";
     }
     
     // Filtre par format
@@ -68,7 +135,10 @@ try {
     
     // Filtre par recherche
     if (!empty($search)) {
-        $sql .= " AND (o.titre LIKE :search OR o.description LIKE :search)";
+        $sql .= " AND (o.titre LIKE :search 
+                  OR o.description LIKE :search 
+                  OR o.resume LIKE :search
+                  OR p.nom_complet LIKE :search)";
         $params[':search'] = "%$search%";
     }
     
@@ -76,6 +146,12 @@ try {
     switch ($sort) {
         case 'date-asc':
             $sql .= " ORDER BY o.annee_publication ASC, o.created_at ASC";
+            break;
+        case 'titre-asc':
+            $sql .= " ORDER BY o.titre ASC";
+            break;
+        case 'titre-desc':
+            $sql .= " ORDER BY o.titre DESC";
             break;
         case 'price-asc':
             $sql .= " ORDER BY COALESCE(o.prix_promotion, 0) ASC";
@@ -125,48 +201,46 @@ try {
             'id' => (int)$ouvrage['id'],
             'titre' => $ouvrage['titre'],
             'sous_titre' => $ouvrage['sous_titre'] ?? '',
+            'resume' => $ouvrage['resume'] ?? '',
             'description' => $ouvrage['description'] ?? '',
-            'categorie' => [
-                'id' => (int)$ouvrage['categorie_id'],
-                'nom' => $ouvrage['categorie_nom'] ?? 'Non catégorisé',
-                'slug' => $ouvrage['categorie_id'],
-                'couleur' => $ouvrage['categorie_couleur'] ?? '#cccccc'
-            ],
-            'couverture' => $ouvrage['couverture_url'],
-            'annee' => $ouvrage['annee_publication'],
+            'auteur_nom' => $ouvrage['auteur_nom'] ?? 'Auteur inconnu',
+            'auteur_titre' => $ouvrage['auteur_titre'] ?? '',
+            'categorie_nom' => $ouvrage['categorie_nom'] ?? 'Non catégorisé',
+            'categorie_id' => $ouvrage['categorie_id'],
+            'categorie_couleur' => $ouvrage['categorie_couleur'] ?? '#cccccc',
+            'couverture_url' => $ouvrage['couverture_url'],
+            'fichier_pdf_url' => $ouvrage['fichier_pdf_url'],
+            'annee_publication' => $ouvrage['annee_publication'],
             'langue' => $ouvrage['langue'] ?? 'Français',
-            'stock' => (int)$ouvrage['stock'],
-            'isPhysical' => (bool)$ouvrage['is_physical'],
-            'isDigital' => (bool)$ouvrage['is_digital'],
-            'prix' => $ouvrage['prix_promotion'],
-            'formats' => [
-                'physique' => (bool)$ouvrage['is_physical'],
-                'numerique' => (bool)$ouvrage['is_digital']
-            ],
-            'slug' => $ouvrage['slug'],
-            'isbn' => $ouvrage['isbn'] ?? '',
             'editeur' => $ouvrage['editeur'] ?? '',
-            'pages' => $ouvrage['nombre_pages'] ?? 0
+            'isbn' => $ouvrage['isbn'] ?? '',
+            'nombre_pages' => $ouvrage['nombre_pages'] ?? 0,
+            'stock' => (int)$ouvrage['stock'],
+            'is_physical' => (int)$ouvrage['is_physical'],
+            'is_digital' => (int)$ouvrage['is_digital'],
+            'prix_promotion' => $ouvrage['prix_promotion'],
+            'slug' => $ouvrage['slug'],
+            'views_count' => (int)$ouvrage['views_count'],
+            'created_at' => $ouvrage['created_at'],
+            'updated_at' => $ouvrage['updated_at']
         ];
     }
     
     // Construire la réponse
     $response = [
         'success' => true,
-        'data' => [
-            'ouvrages' => $formatted_ouvrages,
-            'pagination' => [
-                'page' => $page,
-                'limit' => $limit,
-                'total' => $total,
-                'totalPages' => $total_pages
-            ],
-            'filters' => [
-                'categorie' => $categorie,
-                'format' => $format,
-                'search' => $search,
-                'sort' => $sort
-            ]
+        'ouvrages' => $formatted_ouvrages,
+        'pagination' => [
+            'page' => $page,
+            'limit' => $limit,
+            'total' => $total,
+            'totalPages' => $total_pages
+        ],
+        'filters' => [
+            'categorie' => $categorie,
+            'format' => $format,
+            'search' => $search,
+            'sort' => $sort
         ]
     ];
     
@@ -200,7 +274,7 @@ try {
     }
     
     http_response_code(500);
-    echo json_encode($response, JSON_PRETTY_PRINT);
+    echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     
 } catch (Exception $e) {
     // Autre type d'erreur
@@ -211,6 +285,5 @@ try {
     ];
     
     http_response_code(500);
-    echo json_encode($response, JSON_PRETTY_PRINT);
+    echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }
-?>

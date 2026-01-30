@@ -684,11 +684,11 @@ $nom = $nomParts[1] ?? $professeur['nom_complet'];
         // Modifier un ouvrage
         async function editOuvrage(id) {
             try {
-                const response = await fetch(`../api/get_ouvrage.php?id=${id}`);
+                const response = await fetch(`../api/get_ouvrages.php?id=${id}`);    // anciennement get_ouvrage.php
                 const data = await response.json();
                 
                 if (data.success) {
-                    const ouvrage = data.ouvrage;
+                    const ouvrage = data.data.ouvrage;  // Correction ici - car l'API cherche data.data.ouvrage
                     
                     document.getElementById('ouvrage_id').value = ouvrage.id;
                     document.getElementById('titre').value = ouvrage.titre || '';

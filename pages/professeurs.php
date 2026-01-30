@@ -556,7 +556,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                     <label class="checkbox">
                                         <input type="checkbox" name="remember"> Se souvenir
                                     </label>
-                                    <a href="pages/motdepasse_oublie.html" class="forgot-password">Mot de passe oublié ?</a>
+                                    <a href="motdepasse_oublie.html" class="forgot-password">Mot de passe oublié ?</a>
                                 </div>
                                 
                                 <button type="submit" class="btn-auth-submit">

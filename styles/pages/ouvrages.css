@@ -96,7 +96,7 @@ body {
 .main-nav .nav-list {
     display: flex;
     list-style: none;
-    gap: var(--spacing-lg);
+    /*gap: var(--spacing-lg);*/
 }
 
 .nav-link {
